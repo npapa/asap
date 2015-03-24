@@ -1,0 +1,22 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.DB.NoSQL.HBase.location=127.0.0.1
+Constraints.Output0.DataInfo.Attributes.Atr1.type=ByteWritable
+Constraints.Output0.Engine.DB.NoSQL.HBase.key=Atr1
+Constraints.OpSpecification.Algorithm.name=kmeans
+Constraints.Output0.DataInfo.Attributes.Atr2.type=List<ByteWritable>
+Constraints.Input0.DataInfo.Attributes.Atr1.type=ByteWritable
+Constraints.Input0.DataInfo.Attributes.Atr2.type=List<ByteWritable>
+Constraints.Input0.Engine.DB.NoSQL.HBase.value=Atr2
+Constraints.Output0.Engine.DB.NoSQL.HBase.value=Atr2
+Constraints.Output0.DataInfo.Attributes.number=2
+Constraints.EngineSpecification.Distributed.MapReduce.masterLocation=127.0.0.1
+Constraints.Output.number=1
+Constraints.Input0.DataInfo.Attributes.number=2
+Constraints.Input.number=1
+Constraints.Input0.Engine.DB.NoSQL.HBase.key=Atr1
+Constraints.Input0.Engine.DB.NoSQL.HBase.location=127.0.0.1
+Optimization.inputSpace.k=Double,1.0,21.0,5.0
+Optimization.inputSpace.points=Double,1E05,1E06,1E05
+Optimization.outputSpace.execTime=Double
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
