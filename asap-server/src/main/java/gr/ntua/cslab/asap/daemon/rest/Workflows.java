@@ -33,7 +33,7 @@ public class Workflows {
 	@Produces("application/json")
     public WorkflowDictionary listOperators() throws IOException, NumberFormatException, EvaluationException {
 
-		MaterializedWorkflow1 mw = new MaterializedWorkflow1("latest");
+		MaterializedWorkflow1 mw = new MaterializedWorkflow1("latest","/tmp");
 		WorkflowDictionary ret = mw.toWorkflowDictionary();
 		
 		

@@ -35,13 +35,15 @@ public class MaterializedWorkflow1 {
 	public String functionTarget;
 	private static Logger logger = Logger.getLogger(MaterializedWorkflow1.class.getName());
 	public HashMap<String,WorkflowNode> nodes;
+	public String directory;
 	
 	@Override
 	public String toString() {
 		return targets.toString();
 	}
 	
-	public MaterializedWorkflow1(String name) {
+	public MaterializedWorkflow1(String name, String directory) {
+		this.directory = directory;
 		this.name = name;
 		targets = new ArrayList<WorkflowNode>();
 		bestPlans = new HashMap<String, List<WorkflowNode>>();
@@ -89,7 +91,7 @@ public class MaterializedWorkflow1 {
 		nodes = new HashMap<String, WorkflowNode>();
 		HashSet<String> nodesActive = new HashSet<String>();
 		for(OperatorDictionary op : workflow.getOperators()){
-			if(op.getStatus().equals("running")){
+			if(op.getStatus().equals("warn")){
 				nodesActive.add(op.getName());
 				if(op.getIsOperator().equals("true")){
 					WorkflowNode n = new WorkflowNode(true, false);
@@ -122,8 +124,7 @@ public class MaterializedWorkflow1 {
 	}
 	
 
-	public void writeToDir(String directory) throws Exception {
-		directory+="/"+name;
+	public void writeToDir() throws Exception {
 		for(WorkflowNode t : targets){
 			t.setAllNotVisited();
 		}
@@ -157,7 +158,7 @@ public class MaterializedWorkflow1 {
         
 	}
 
-	public void readFromDir(String directory) throws Exception {
+	public void readFromDir() throws Exception {
 		nodes = new HashMap<String, WorkflowNode>();
 		File folder = new File(directory+"/operators");
 		File[] files = folder.listFiles();
@@ -251,9 +252,9 @@ public class MaterializedWorkflow1 {
 		System.out.println(mw);
 		mw.printNodes();
 		*/
-		MaterializedWorkflow1 mw = new MaterializedWorkflow1("sd");
+		MaterializedWorkflow1 mw = new MaterializedWorkflow1("sd", "asapLibrary/workflows/latest");
 		
-		mw.readFromDir("asapLibrary/workflows/latest");
+		mw.readFromDir();
 		System.out.println(mw);
 	}
 

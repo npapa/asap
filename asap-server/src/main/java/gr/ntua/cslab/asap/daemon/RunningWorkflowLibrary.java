@@ -1,10 +1,14 @@
 package gr.ntua.cslab.asap.daemon;
 
+import gr.ntua.cslab.asap.operators.Dataset;
+import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
-import gr.ntua.cslab.asap.rest.beans.Unmarshall;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
+import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
+import gr.ntua.cslab.asap.utils.Utils;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
+import gr.ntua.cslab.asap.workflow.WorkflowNode;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.sourceforge.jeval.EvaluationException;
@@ -66,19 +71,23 @@ public class RunningWorkflowLibrary {
 
 	public static void executeWorkflow(MaterializedWorkflow1 materializedWorkflow) throws Exception {
 		WorkflowDictionary wd = materializedWorkflow.toWorkflowDictionary();
-		YarnClientService service = startYarnClientService(wd, materializedWorkflow.name);
+		for(OperatorDictionary op : wd.getOperators()){
+			if(op.getStatus().equals("running"))
+				op.setStatus("warn");
+		}
+		YarnClientService service = startYarnClientService(wd, materializedWorkflow);
 		runningServices.put(materializedWorkflow.name, service);
 		runningWorkflows.put(materializedWorkflow.name, wd);
 	}
 
-	private static YarnClientService startYarnClientService(WorkflowDictionary d, String name) {
+	private static YarnClientService startYarnClientService(WorkflowDictionary d, MaterializedWorkflow1 mw) throws Exception {
 
 	    YarnClientService service = null;
 		HashMap<String,String> operators = new HashMap<String, String>();
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();
 		for(OperatorDictionary op : d.getOperators()){
 			if(op.getIsOperator().equals("true")){
-				operators.put(op.getName(), op.getName()+".lua");
+				operators.put(op.getName(), OperatorLibrary.operatorDirectory+"/"+op.getName()+"/"+op.getName()+".lua");
 			}
 			else{
 				if(op.getInput().isEmpty()){
@@ -88,7 +97,9 @@ public class RunningWorkflowLibrary {
 		}
 		System.out.println("Operators: "+operators);
 		System.out.println("InputDatasets: "+inputDatasets);
-	    LuaYarnClientParameters params = new LuaYarnClientParameters(name,"workflow.xml", operators, inputDatasets, conf,
+		String tmpFilename = mw.directory+"/" +UUID.randomUUID()+".xml";
+		Utils.marshall(d, tmpFilename);
+	    LuaYarnClientParameters params = new LuaYarnClientParameters(mw.name, tmpFilename, operators, inputDatasets, conf,
 	        new HashMap<String, Object>(), new HashMap<String, String>());
 	    service = new YarnClientServiceImpl(params);
 

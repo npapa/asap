@@ -39,7 +39,7 @@ public class Operator {
 	public SpecTree optree;
 	public String opName;
 	private static Logger logger = Logger.getLogger(Operator.class.getName());
-	private String directory;
+	public String directory;
 	
 	public Operator(String name, String directory) {
 		optree = new SpecTree();

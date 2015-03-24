@@ -2,6 +2,7 @@ package gr.ntua.cslab.asap.daemon.rest;
 
 import gr.ntua.cslab.asap.rest.beans.*;
 import gr.ntua.cslab.asap.daemon.RunningWorkflowLibrary;
+import gr.ntua.cslab.asap.utils.Utils;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
 
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class RunningWorkflows {
 
     public void refreshReport(@PathParam("id") String id, @Context HttpServletRequest request, InputStream input) throws IOException, Exception {
 		logger.info("Update state: "+id);
-		WorkflowDictionary workflow = Unmarshall.unmarshall(input);
+		WorkflowDictionary workflow = Utils.unmarshall(input);
 		RunningWorkflowLibrary.setWorkFlow(id, workflow);
 	}
 }

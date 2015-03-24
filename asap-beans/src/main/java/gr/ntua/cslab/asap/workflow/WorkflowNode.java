@@ -422,7 +422,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	
 	public void toWorkflowDictionary(WorkflowDictionary ret, HashMap<String, List<WorkflowNode>> bestPlans) throws NumberFormatException, EvaluationException {
 		if(!visited){
-			OperatorDictionary op= new OperatorDictionary(toStringNorecursive(), String.format( "%.2f", getCost() ), getStatus(bestPlans), isOperator+"", toStringNorecursive()+"\n"+toKeyValueString());
+			OperatorDictionary op= new OperatorDictionary(toStringNorecursive(), String.format( "%.2f", getCost() ), getStatus(bestPlans), isOperator+"", toKeyValueString());
 			
 			for(WorkflowNode n : inputs){
 				op.addInput(n.toStringNorecursive());
@@ -453,10 +453,13 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		if(!visited){
 
 			if(isOperator){
-				if(isAbstract)
+				if(isAbstract){
 					abstractOperator.writeToPropertiesFile(opDir+"/"+abstractOperator.opName);
-				else
+				}
+				else{
+					operator.directory=opDir+"/"+operator.opName;
 					operator.writeToPropertiesFile(opDir+"/"+operator.opName);
+				}
 			}
 			else{
 				dataset.writeToPropertiesFile(datasetDir+"/"+dataset.datasetName);

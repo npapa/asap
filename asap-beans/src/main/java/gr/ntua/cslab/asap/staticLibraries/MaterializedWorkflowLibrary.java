@@ -18,6 +18,14 @@ public class MaterializedWorkflowLibrary {
 	private static HashMap<String,MaterializedWorkflow1> materializedWorkflows;
 	private static String workflowDirectory;
 
+	public static String getWorkflowDirectory() {
+		return workflowDirectory;
+	}
+
+	public static void setWorkflowDirectory(String workflowDirectory) {
+		MaterializedWorkflowLibrary.workflowDirectory = workflowDirectory;
+	}
+
 	public static void initialize(String directory) throws Exception{
 
 		workflowDirectory = directory;
@@ -27,9 +35,9 @@ public class MaterializedWorkflowLibrary {
 
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isDirectory()) {
-		        Logger.getLogger(OperatorLibrary.class.getName()).info("Loading operator: " + listOfFiles[i].getName());
-		        MaterializedWorkflow1 w = new MaterializedWorkflow1(listOfFiles[i].getName());
-		        w.readFromDir(listOfFiles[i].getPath());
+		        Logger.getLogger(OperatorLibrary.class.getName()).info("Loading workflow: " + listOfFiles[i].getName());
+		        MaterializedWorkflow1 w = new MaterializedWorkflow1(listOfFiles[i].getName(),listOfFiles[i].getPath());
+		        w.readFromDir();
 		        materializedWorkflows.put(listOfFiles[i].getName(), w);
 		    }
 		}
@@ -46,7 +54,7 @@ public class MaterializedWorkflowLibrary {
 	public static void add(MaterializedWorkflow1 workflow) throws Exception {
 		
 		materializedWorkflows.put(workflow.name, workflow);
-		workflow.writeToDir(workflowDirectory);
+		workflow.writeToDir();
 	}
 
 	public static MaterializedWorkflow1 get(String mw) {

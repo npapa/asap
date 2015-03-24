@@ -89,6 +89,7 @@
     			</executions>
             </plugin>  
         </plugins>
+        <finalName>asap-server</finalName>
     </build>
     <dependencies>
     	<dependency>
@@ -154,6 +155,11 @@
         <dependency>
             <groupId>com.cloudera.kitten</groupId>
             <artifactId>kitten-client</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudera.kitten</groupId>
+            <artifactId>kitten-master</artifactId>
             <version>0.2.0</version>
         </dependency>
     	<dependency>

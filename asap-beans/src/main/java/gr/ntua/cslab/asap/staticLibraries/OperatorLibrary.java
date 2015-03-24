@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 
 public class OperatorLibrary {
 	private static HashMap<String,Operator> operators;
-	private static String operatorDirectory;
+	public static String operatorDirectory;
 	private static Logger logger = Logger.getLogger(OperatorLibrary.class.getName());
 	
 	public static void initialize(String directory) throws Exception{

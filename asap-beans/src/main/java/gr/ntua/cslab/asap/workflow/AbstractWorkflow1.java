@@ -20,6 +20,7 @@ import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import gr.ntua.cslab.asap.staticLibraries.AbstractOperatorLibrary;
 import gr.ntua.cslab.asap.staticLibraries.DatasetLibrary;
+import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Dataset;
@@ -66,8 +67,8 @@ public class AbstractWorkflow1 {
 	public MaterializedWorkflow1 materialize(String metric, String nameExtention, String policy) throws Exception {
 
 		parsePolicy(policy);
-		
-		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(name+"_"+nameExtention);
+		String fullName=name+"_"+nameExtention;
+		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(fullName, MaterializedWorkflowLibrary.getWorkflowDirectory()+"/"+fullName);
 		materializedWorkflow.setPolicy(groupInputs, optimizationFunction, functionTarget);
 		Workflow1DPTable dpTable = new Workflow1DPTable();
 		for(WorkflowNode t : targets){
