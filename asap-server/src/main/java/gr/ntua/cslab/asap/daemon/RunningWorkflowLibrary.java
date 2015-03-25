@@ -115,8 +115,16 @@ public class RunningWorkflowLibrary {
 		ApplicationReport report = workflowsReport.get(id);
 		if(report==null)
 			return "";
-		else
-			return report.getYarnApplicationState().toString();
+		else{
+			if(report.getYarnApplicationState().equals(YarnApplicationState.FINISHED)){
+				String ret = "FINISHED";
+				ret+=" "+report.getFinalApplicationStatus();
+				return ret;
+			}
+			else{
+				return report.getYarnApplicationState().toString();
+			}
+		}
 	}
 
 	public static String getTrackingUrl(String id) {

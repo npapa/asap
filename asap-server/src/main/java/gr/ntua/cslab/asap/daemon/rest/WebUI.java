@@ -39,6 +39,7 @@ public class WebUI {
     private static String header=readFile("header.html");
     private static String footer=readFile("footer.html");
     private static String runningWorkflowUp=readFile("runningWorkflowUp.html").trim();
+    private static String runningWorkflowLow=readFile("runningWorkflowLow.html").trim();
     private static String workflowUp=readFile("workflowUp.html").trim();
     private static String abstractWorkflowUp=readFile("abstractWorkflowUp.html").trim();
     private static String workflowLow=readFile("workflowLow.html");
@@ -483,11 +484,11 @@ public class WebUI {
     public String runningWorkflowDescription(@PathParam("id") String id) throws IOException {
     	String trackingUrl = RunningWorkflowLibrary.getTrackingUrl(id);
     	String ret = header+
-    			"Tracking URL <a href=\""+trackingUrl+"\">"+trackingUrl+"</a>"+
-    			"State: "+RunningWorkflowLibrary.getState(id);
+    			"Tracking URL: <a id=\"trackingURL\" href=\""+trackingUrl+"\">"+trackingUrl+"</a>"+
+    			"<p id=\"state\">State: "+RunningWorkflowLibrary.getState(id)+"</p>";
     	ret+="</div><div  class=\"mainpage\">";
     	
-    	ret+=runningWorkflowUp+"/runningWorkflows/"+id+workflowLow;
+    	ret+=runningWorkflowUp+"/runningWorkflows/"+id+runningWorkflowLow;
     	ret += footer;
     	return ret;
     }
@@ -520,11 +521,11 @@ public class WebUI {
     	RunningWorkflowLibrary.executeWorkflow(MaterializedWorkflowLibrary.get(workflowName));
     	String trackingUrl = RunningWorkflowLibrary.getTrackingUrl(workflowName);
     	String ret = header+
-    			"Tracking URL <a href=\""+trackingUrl+"\">"+trackingUrl+"</a>"+
-    			"State: "+RunningWorkflowLibrary.getState(workflowName);
+    			"Tracking URL: <a id=\"trackingURL\" href=\""+trackingUrl+"\">"+trackingUrl+"</a>"+
+    			"<p id=\"state\">State: "+RunningWorkflowLibrary.getState(workflowName)+"</p>";
     	ret+="</div><div  class=\"mainpage\">";
     	
-    	ret+=runningWorkflowUp+"/runningWorkflows/"+workflowName+workflowLow;
+    	ret+=runningWorkflowUp+"/runningWorkflows/"+workflowName+runningWorkflowLow;
     	
     	ret += footer;
     	return ret;

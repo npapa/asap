@@ -39,7 +39,18 @@ public class RunningWorkflows {
     public WorkflowDictionary getDescription(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
         return RunningWorkflowLibrary.getWorkflow(id);
     }
-	
+
+	@GET
+	@Path("/{id}/trackingURL")
+    public String getTrackingURL(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+        return RunningWorkflowLibrary.getTrackingUrl(id);
+    }
+
+	@GET
+	@Path("/{id}/state")
+    public String getState(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+        return RunningWorkflowLibrary.getState(id);
+    }
 
 	@GET
 	@Produces("application/XML")
