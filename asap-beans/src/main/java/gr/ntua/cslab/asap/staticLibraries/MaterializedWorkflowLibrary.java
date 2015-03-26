@@ -42,11 +42,10 @@ public class MaterializedWorkflowLibrary {
 		    }
 		}
 	}
-	
-	public static WorkflowDictionary getWorkflow(String name) throws NumberFormatException, EvaluationException{
-		return materializedWorkflows.get(name).toWorkflowDictionary();
+	public static WorkflowDictionary getWorkflow(String name, String delimiter) throws NumberFormatException, EvaluationException{
+		return materializedWorkflows.get(name).toWorkflowDictionary(delimiter);
 	}
-
+	
 	public static List<String> getWorkflows() {
 		return new ArrayList<String>(materializedWorkflows.keySet());
 	}

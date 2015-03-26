@@ -7,3 +7,4 @@ Optimization.size=1
 Constraints.Engine.DB.Relational.MySQL.schema=...
 Constraints.DataInfo.Attributes.number=2
 Constraints.Engine.DB.Relational.MySQL.location=127.0.0.1
+Execution.path=/opt/npapa/asapWorkflow/mySQLDataset

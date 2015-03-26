@@ -34,7 +34,7 @@ public class Workflows {
     public WorkflowDictionary listOperators() throws IOException, NumberFormatException, EvaluationException {
 
 		MaterializedWorkflow1 mw = new MaterializedWorkflow1("latest","/tmp");
-		WorkflowDictionary ret = mw.toWorkflowDictionary();
+		WorkflowDictionary ret = mw.toWorkflowDictionary("\n");
 		
 		
     	/*WorkflowDictionary ret = new WorkflowDictionary();
@@ -61,7 +61,7 @@ public class Workflows {
 	@Produces("application/json")
 	@Path("/{id}/")
     public WorkflowDictionary getDescription(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
-        return MaterializedWorkflowLibrary.getWorkflow(id);
+        return MaterializedWorkflowLibrary.getWorkflow(id, "<br>");
     }
 	
 
@@ -69,6 +69,6 @@ public class Workflows {
 	@Produces("application/XML")
 	@Path("/XML/{id}/")
     public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
-        return MaterializedWorkflowLibrary.getWorkflow(id);
+        return MaterializedWorkflowLibrary.getWorkflow(id, "<br>");
     }
 }

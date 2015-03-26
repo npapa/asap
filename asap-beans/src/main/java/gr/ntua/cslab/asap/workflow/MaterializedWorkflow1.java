@@ -76,13 +76,13 @@ public class MaterializedWorkflow1 {
 		}
 	}
 	
-	public WorkflowDictionary toWorkflowDictionary() throws NumberFormatException, EvaluationException {
+	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws NumberFormatException, EvaluationException {
 		for(WorkflowNode t : targets){
 			t.setAllNotVisited();
 		}
 		WorkflowDictionary ret = new WorkflowDictionary();
     	for(WorkflowNode target : targets){
-    		target.toWorkflowDictionary(ret, bestPlans);
+    		target.toWorkflowDictionary(ret, bestPlans, delimiter);
     	}
 		return ret;
 	}

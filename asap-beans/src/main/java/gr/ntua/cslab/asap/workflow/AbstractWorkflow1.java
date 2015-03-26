@@ -319,10 +319,10 @@ public class AbstractWorkflow1 {
 		}
 	}
 
-	public WorkflowDictionary toWorkflowDictionary() throws NumberFormatException, EvaluationException {
+	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws NumberFormatException, EvaluationException {
 		WorkflowDictionary ret = new WorkflowDictionary();
 		for(WorkflowNode n : workflowNodes.values()){
-	    	OperatorDictionary op = new OperatorDictionary(n.toStringNorecursive(), n.getCost()+"", n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.toStringNorecursive()+"\n"+n.toKeyValueString());
+	    	OperatorDictionary op = new OperatorDictionary(n.toStringNorecursive(), n.getCost()+"", n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.toKeyValueString(delimiter));
 
 			for(WorkflowNode in : n.inputs){
 				op.addInput(in.toStringNorecursive());
@@ -333,13 +333,13 @@ public class AbstractWorkflow1 {
 	}
 	
 	
-	public WorkflowDictionary toWorkflowDictionaryRecursive() throws NumberFormatException, EvaluationException {
+	public WorkflowDictionary toWorkflowDictionaryRecursive(String delimiter) throws NumberFormatException, EvaluationException {
 		for(WorkflowNode t : targets){
 			t.setAllNotVisited();
 		}
 		WorkflowDictionary ret = new WorkflowDictionary();
     	for(WorkflowNode target : targets){
-    		target.toWorkflowDictionary(ret, new HashMap<String, List<WorkflowNode>>());
+    		target.toWorkflowDictionary(ret, new HashMap<String, List<WorkflowNode>>(), delimiter);
     	}
 		return ret;
 	}

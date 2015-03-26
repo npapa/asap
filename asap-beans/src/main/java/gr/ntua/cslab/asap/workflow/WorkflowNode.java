@@ -420,13 +420,13 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 	}
 	
-	public void toWorkflowDictionary(WorkflowDictionary ret, HashMap<String, List<WorkflowNode>> bestPlans) throws NumberFormatException, EvaluationException {
+	public void toWorkflowDictionary(WorkflowDictionary ret, HashMap<String, List<WorkflowNode>> bestPlans, String delimiter) throws NumberFormatException, EvaluationException {
 		if(!visited){
-			OperatorDictionary op= new OperatorDictionary(toStringNorecursive(), String.format( "%.2f", getCost() ), getStatus(bestPlans), isOperator+"", toKeyValueString());
+			OperatorDictionary op= new OperatorDictionary(toStringNorecursive(), String.format( "%.2f", getCost() ), getStatus(bestPlans), isOperator+"", toKeyValueString(delimiter));
 			
 			for(WorkflowNode n : inputs){
 				op.addInput(n.toStringNorecursive());
-				n.toWorkflowDictionary(ret, bestPlans);
+				n.toWorkflowDictionary(ret, bestPlans, delimiter);
 			}
 	    	ret.addOperator(op);
 			visited=true;
@@ -434,17 +434,17 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		
 	}
 	
-	public String toKeyValueString() {
+	public String toKeyValueString(String delimiter) {
 		if(isOperator){
 			if(isAbstract){
-				return abstractOperator.toKeyValues("\n");
+				return abstractOperator.toKeyValues(delimiter);
 			}
 			else{
-				return operator.toKeyValues("\n");
+				return operator.toKeyValues(delimiter);
 			}
 		}
 		else{
-			return dataset.toKeyValues("\n");
+			return dataset.toKeyValues(delimiter);
 		}
 	}
 

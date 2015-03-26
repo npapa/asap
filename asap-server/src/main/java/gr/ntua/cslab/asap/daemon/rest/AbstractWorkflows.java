@@ -32,6 +32,6 @@ public class AbstractWorkflows {
 	@Produces("application/json")
 	@Path("/{id}/")
     public WorkflowDictionary getDescription(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
-        return AbstractWorkflowLibrary.getWorkflow(id);
+        return AbstractWorkflowLibrary.getWorkflow(id, "<br>");
     }
 }

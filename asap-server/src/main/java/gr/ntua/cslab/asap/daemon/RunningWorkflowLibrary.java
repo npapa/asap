@@ -70,7 +70,7 @@ public class RunningWorkflowLibrary {
 	}
 
 	public static void executeWorkflow(MaterializedWorkflow1 materializedWorkflow) throws Exception {
-		WorkflowDictionary wd = materializedWorkflow.toWorkflowDictionary();
+		WorkflowDictionary wd = materializedWorkflow.toWorkflowDictionary("\n");
 		for(OperatorDictionary op : wd.getOperators()){
 			if(op.getStatus().equals("running"))
 				op.setStatus("warn");
@@ -91,7 +91,10 @@ public class RunningWorkflowLibrary {
 			}
 			else{
 				if(op.getInput().isEmpty()){
-					inputDatasets.put(op.getName(), op.getName());
+					Dataset inDataset = new Dataset(op.getName());
+					inDataset.readPropertiesFromString(op.getDescription());
+					System.out.println("Adding dataset: "+op.getName()+" "+inDataset.getParameter("Execution.path"));
+					inputDatasets.put(op.getName(), inDataset.getParameter("Execution.path"));
 				}
 			}
 		}

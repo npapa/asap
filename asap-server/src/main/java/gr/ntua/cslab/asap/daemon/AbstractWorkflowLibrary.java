@@ -40,8 +40,8 @@ public class AbstractWorkflowLibrary {
 		}
 	}
 	
-	public static WorkflowDictionary getWorkflow(String name) throws NumberFormatException, EvaluationException{
-		return abstractWorkflows.get(name).toWorkflowDictionary();
+	public static WorkflowDictionary getWorkflow(String name, String delimiter) throws NumberFormatException, EvaluationException{
+		return abstractWorkflows.get(name).toWorkflowDictionary(delimiter);
 	}
 
 	public static List<String> getWorkflows() {
