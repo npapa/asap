@@ -8,4 +8,4 @@ Constraints.Engine.DB.NoSQL.HBase.location=127.0.0.1
 Optimization.size=1000
 Constraints.DataInfo.Attributes.number=2
 Constraints.Engine.DB.NoSQL.HBase.value=Atr2
-Execution.path=/opt/npapa/asapWorkflow/hbaseDataset
+Execution.path=/home/asap/Data/hbaseDataset

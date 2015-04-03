@@ -1,5 +1,7 @@
 package gr.ntua.cslab.asap.operators;
 
+import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -94,6 +96,12 @@ public class AbstractOperator implements Comparable<AbstractOperator> {
 			add((String)e.getKey(), (String)e.getValue());
 		}
 		stream.close();
+	}
+
+	public OperatorDescription toOperatorDescription() {
+		OperatorDescription ret = new OperatorDescription(opName, "");
+		optree.toOperatorDescription(ret);
+		return ret;
 	}
 	
 	

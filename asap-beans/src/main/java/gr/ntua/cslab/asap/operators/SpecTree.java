@@ -1,5 +1,7 @@
 package gr.ntua.cslab.asap.operators;
 
+import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -79,6 +81,12 @@ public class SpecTree {
 			ret =n.toKeyValues(curentPath, ret, separator);
 		}
 		return ret;
+	}
+
+	public void toOperatorDescription(OperatorDescription ret) {
+		for(SpecTreeNode n : tree.values()){
+			n.toOperatorDescription(ret);
+		}
 	}
 
 	public boolean checkMatch(SpecTree optree2) {
@@ -248,6 +256,7 @@ public class SpecTree {
 			}
 		}
 	}
+
 
 
 

@@ -1,5 +1,6 @@
 package gr.ntua.cslab.asap.operators;
 
+import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.utils.Utils;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
 import gr.ntua.ece.cslab.panic.core.classifier.UserFunctionClassifier;
@@ -238,6 +239,13 @@ public class Operator {
 	public String toKeyValues(String separator) {
 		String ret ="";
 		ret+=optree.toKeyValues("", ret,separator);
+		return ret;
+	}
+	
+
+	public OperatorDescription toOperatorDescription() {
+		OperatorDescription ret = new OperatorDescription(opName, "");
+		optree.toOperatorDescription(ret);
 		return ret;
 	}
 	
@@ -585,6 +593,8 @@ public class Operator {
 		long stop = System.currentTimeMillis();
 		System.out.println("Time (s): "+((double)(stop-start))/1000.0);
 	}
+
+
 
 
 

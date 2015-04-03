@@ -44,6 +44,8 @@ public class WebUI {
     private static String abstractWorkflowUp=readFile("abstractWorkflowUp.html").trim();
     private static String workflowLow=readFile("workflowLow.html");
     private static String scatterPlot=readFile("scatterPlot.html");
+    private static String opTreeUp=readFile("opTreeUp.html").trim();
+    private static String opTreeLow=readFile("opTreeLow.html");
     
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -85,21 +87,27 @@ public class WebUI {
     public String abstractOperatorDescription(@PathParam("id") String id) throws IOException {
     	String ret = header;
     	ret+= "<h1>"+id+"</h1>";
-    	ret += "<form action=\"/web/abstractOperators/editOperator\" method=\"get\">"
-			+ "<textarea rows=\"40\" cols=\"150\" name=\"opString\">"+AbstractOperatorLibrary.getOperatorDescription(id)+"</textarea>"
-			+ "<input type=\"hidden\" name=\"opname\" value=\""+id+"\">"
-			+ "<br><input class=\"styled-button\" type=\"submit\" value=\"Edit operator\"></form><br>";
-    	//ret += "<p>"+AbstractOperatorLibrary.getOperatorDescription(id)+"</p>";
+
+    	ret+= opTreeUp+"\"/abstractOperators/json/"+id+"\";"+opTreeLow;
+    	
 
     	ret+="<form action=\"/web/abstractOperators/checkMatches\" method=\"get\">"
 			+ "<input type=\"hidden\" name=\"opname\" value=\""+id+"\">"
 			+ "<input class=\"styled-button\" type=\"submit\" value=\"Check matches\"></form><br>";
+    	
+    	ret += "<form action=\"/web/abstractOperators/editOperator\" method=\"get\">"
+			+ "<textarea rows=\"40\" cols=\"150\" name=\"opString\">"+AbstractOperatorLibrary.getOperatorDescription(id)+"</textarea>"
+			+ "<input type=\"hidden\" name=\"opname\" value=\""+id+"\">"
+			+ "<br><input class=\"styled-button\" type=\"submit\" value=\"Edit operator\"></form><br>";
+
 
     	ret+="<form action=\"/web/abstractOperators/deleteOperator\" method=\"get\">"
 			+ "<input type=\"hidden\" name=\"opname\" value=\""+id+"\">"
-			+ "<input class=\"styled-button\" type=\"submit\" value=\"Delete operator\"></form></div>";
+			+ "<input class=\"styled-button\" type=\"submit\" value=\"Delete operator\"></form>";
+    	//ret += "<p>"+AbstractOperatorLibrary.getOperatorDescription(id)+"</p>";
+
     	
-    	ret += footer;
+    	ret += "</div>"+ footer;
         return ret;
     }
 
@@ -231,13 +239,15 @@ public class WebUI {
     	ret+="<form action=\"/web/operators/operatorProfile\" method=\"get\">"
     			+ "<input type=\"hidden\" name=\"opname\" value=\""+id+"\">"
     			+ "Profile variable:<select name=\"variable\">";
-        	for(String outvar : OperatorLibrary.getOperator(id).outputSpace.keySet()){
-        		ret+= "<option value=\""+outvar+"\">"+outvar+"</option>";
-        	}
-    		ret+= "</select><br>"
-        		+ "<input class=\"styled-button\" type=\"submit\" name=\"profileType\" value=\"Compare models\">"
-        		+ "<input class=\"styled-button\" type=\"submit\" name=\"profileType\" value=\"View model\">"
-    			+ "<input class=\"styled-button\" type=\"submit\" name=\"profileType\" value=\"View samples\"></form><br>";
+    	for(String outvar : OperatorLibrary.getOperator(id).outputSpace.keySet()){
+    		ret+= "<option value=\""+outvar+"\">"+outvar+"</option>";
+    	}
+		ret+= "</select><br>"
+    		+ "<input class=\"styled-button\" type=\"submit\" name=\"profileType\" value=\"Compare models\">"
+    		+ "<input class=\"styled-button\" type=\"submit\" name=\"profileType\" value=\"View model\">"
+			+ "<input class=\"styled-button\" type=\"submit\" name=\"profileType\" value=\"View samples\"></form><br>";
+
+    	ret+= opTreeUp+"\"/operators/json/"+id+"\";"+opTreeLow;
     		
     	ret += "<form action=\"/web/operators/editOperator\" method=\"get\">"
 			+ "<textarea rows=\"40\" cols=\"150\" name=\"opString\">"+OperatorLibrary.getOperatorDescription(id)+"</textarea>"

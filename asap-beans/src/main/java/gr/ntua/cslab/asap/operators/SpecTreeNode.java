@@ -1,5 +1,7 @@
 package gr.ntua.cslab.asap.operators;
 
+import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -201,6 +203,20 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 		return ret;
 	}
 
+	public void toOperatorDescription(OperatorDescription ret) {
+		if(children.size()==0){
+			OperatorDescription temp = new OperatorDescription(name, value);
+			ret.addChild(temp);
+		}
+		else{
+			OperatorDescription temp = new OperatorDescription(name, "");
+			ret.addChild(temp);
+			for(SpecTreeNode n : children.values()){
+				n.toOperatorDescription(temp);
+			}
+		}
+	}
+	
 	public boolean checkMatch(SpecTreeNode o1) {
 		//materialized operator o1
 		//System.out.println("checking: "+name);
@@ -446,6 +462,8 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 			}
 		}
 	}
+
+
 
 
 }

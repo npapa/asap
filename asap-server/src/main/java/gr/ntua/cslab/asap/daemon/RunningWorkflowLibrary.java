@@ -109,7 +109,7 @@ public class RunningWorkflowLibrary {
 	    service.startAndWait();
 	    if (!service.isRunning()) {
 	    	logger.error("Service failed to startup, exiting...");
-	    	System.exit(2);
+	    	throw new Exception("Service failed to startup, exiting...");
 	    }
 	    return service;
 	}

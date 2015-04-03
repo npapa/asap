@@ -3,6 +3,7 @@ package gr.ntua.cslab.asap.daemon.rest;
 
 import gr.ntua.cslab.asap.daemon.ServerStaticComponents;
 import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 
 import java.io.ByteArrayInputStream;
@@ -51,5 +52,10 @@ public class Operators {
     	return OperatorLibrary.getOperatorDescription(id);
     }
     
-
+    @GET
+    @Path("json/{id}/")
+	@Produces("application/json")
+    public OperatorDescription getOperatorInfoJson(@PathParam("id") String id) {
+    	return OperatorLibrary.getOperatorDescriptionJSON(id);
+    }
 }

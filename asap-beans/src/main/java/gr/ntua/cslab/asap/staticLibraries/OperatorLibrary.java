@@ -3,6 +3,7 @@ package gr.ntua.cslab.asap.staticLibraries;
 import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Dataset;
 import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -83,6 +84,13 @@ public class OperatorLibrary {
 		return op.toKeyValues("\n");
 	}
 
+	public static OperatorDescription getOperatorDescriptionJSON(String id) {
+		Operator op = operators.get(id);
+		if(op==null)
+			return new OperatorDescription("", "");
+		return op.toOperatorDescription();
+	}
+	
 	public static void add(Operator o) {
 		operators.put(o.opName, o);
 	}
@@ -192,6 +200,8 @@ public class OperatorLibrary {
         out.close();
     	br.close();
 	}
+
+
 
 	/*protected static void writeCSV(String file, ){
 		

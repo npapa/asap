@@ -6,11 +6,17 @@
 	<artifactId>asap</artifactId>
 	<packaging>pom</packaging>
 	<version>0.1-SNAPSHOT</version>
-
+	<properties>
+    		<hadoop.version>2.6.0-cdh5.4.0</hadoop.version>
+  	</properties>
 	<modules>
 		<module>asap-server</module>
 		<module>asap-beans</module>
 	</modules>
-
-
+	<repositories>
+	  	<repository>
+    			<id>cloudera-repo-releases</id>
+    			<url>https://repository.cloudera.com/artifactory/repo/</url>
+  		</repository>
+	</repositories>
 </project>
