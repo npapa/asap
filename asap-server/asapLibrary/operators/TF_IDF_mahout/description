@@ -1,15 +1,18 @@
 #
 #Wed Jan 28 16:52:09 EET 2015
 Constraints.Output0.Engine.FS=HDFS
-Constraints.OpSpecification.Algorithm.name=k-means
+Constraints.OpSpecification.Algorithm.name=TF_IDF
 Constraints.Input0.Engine.FS=HDFS
 Constraints.EngineSpecification.Distributed.MapReduce.masterLocation=127.0.0.1
 Constraints.Output.number=1
 Constraints.Input.number=1
-Optimization.inputSpace.k=Double,1.0,21.0,5.0
-Optimization.inputSpace.points=Double,1E05,1E06,1E05
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.Out0.points=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.inputSpace.In0.uniqueKeys=Double,1.0,1E10,l
 Optimization.outputSpace.execTime=Double
-Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.outputSpace.Out0.points=Integer
+Optimization.execTime=In0.uniqueKeys
+Optimization.Out0.points=In0.uniqueKeys
 Optimization.outputSpace.cost=Double
 Optimization.cost=100.0
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction

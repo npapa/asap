@@ -82,7 +82,7 @@ public class MaterializedWorkflow1 {
 		}
 		WorkflowDictionary ret = new WorkflowDictionary();
     	for(WorkflowNode target : targets){
-    		target.toWorkflowDictionary(ret, bestPlans, delimiter);
+    		target.toWorkflowDictionary(ret, bestPlans, delimiter, targets);
     	}
 		return ret;
 	}
@@ -106,10 +106,11 @@ public class MaterializedWorkflow1 {
 					temp.readPropertiesFromString(op.getDescription());
 					n.setDataset(temp);
 					nodes.put(temp.datasetName, n);
+					if(op.isTarget())
+						this.targets.add(n);
 				}
 			}
 		}
-		this.targets.add(nodes.get("d4"));
 		for(OperatorDictionary op : workflow.getOperators()){
 			if(nodesActive.contains(op.getName())){
 				WorkflowNode dest = nodes.get(op.getName());

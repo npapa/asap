@@ -3,6 +3,7 @@ package gr.ntua.cslab.asap.staticLibraries;
 import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Dataset;
 import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -76,6 +77,13 @@ public class DatasetLibrary {
 
 	public static Dataset getDataset(String opname) {
 		return datasets.get(opname);
+	}
+
+	public static OperatorDescription getOperatorDescriptionJSON(String id) {
+		Dataset d = datasets.get(id);
+		if(d==null)
+			return new OperatorDescription("", "");
+		return d.toOperatorDescription();
 	}
 
 }

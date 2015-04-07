@@ -279,12 +279,19 @@ public class Operator {
 		}
 	}
 
-
+	public void copyExecPath(Dataset d, int position){
+		String path = optree.getParameter("Execution.Output"+position+".path");
+		if(path!=null)
+			d.add("Execution.path", opName+"/"+path);
+	}
+	
 	public void outputFor(Dataset d, int position, List<WorkflowNode> inputs) {
 		//System.out.println("Generating output for pos: "+ position);
 		d.datasetTree = optree.copyInputSubTree("Constraints.Output"+position);
 		if(d.datasetTree == null)
 			d.datasetTree = new SpecTree();
+		
+		copyExecPath(d,position);
 		
 		int min = Integer.MAX_VALUE;
 		for(WorkflowNode n :inputs){
@@ -354,7 +361,7 @@ public class Operator {
 	
 	
 	public Double getMettric(String metric, List<WorkflowNode> inputs) throws Exception{
-
+		//System.out.println(metric);
 		Model model = models.get(metric).get(0);
 		//System.out.println(opName);
 		//System.out.println("inputs: "+inputs);

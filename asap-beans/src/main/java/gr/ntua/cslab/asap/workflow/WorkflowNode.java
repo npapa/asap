@@ -188,6 +188,20 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 					}
 					if(inputsMatch){
 						logger.info("all inputs match");
+						int i =0;
+						for(WorkflowNode bin : bestInputs){
+							WorkflowNode tin = temp.inputs.get(i);
+							System.out.println("copy path from: "+bin.getName()+" to "+tin.getName());
+							if(bin.isOperator){
+								//move
+								bin.operator.copyExecPath(tin.dataset,0);
+							}
+							else{
+								bin.dataset.copyExecPath(tin.dataset,0);
+							}
+							i++;
+						}
+						
 						WorkflowNode tempOutputNode = new WorkflowNode(false, false);
 						Dataset tempOutput = new Dataset("t"+materializedWorkflow.count);
 						materializedWorkflow.count++;
@@ -321,6 +335,20 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		return ret;
 	}
 
+	public String getName() {
+		String ret = "";
+		if(isOperator){
+			if(isAbstract)
+				ret+=abstractOperator.opName;
+			else
+				ret+=operator.opName;
+		}
+		else{
+			ret+=dataset.datasetName;
+		}
+		return ret;
+	}
+	
 	public String toStringRecursive() {
 		String ret = "";
 		if(isOperator){
@@ -420,13 +448,14 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 	}
 	
-	public void toWorkflowDictionary(WorkflowDictionary ret, HashMap<String, List<WorkflowNode>> bestPlans, String delimiter) throws NumberFormatException, EvaluationException {
+	public void toWorkflowDictionary(WorkflowDictionary ret, HashMap<String, List<WorkflowNode>> bestPlans, String delimiter, List<WorkflowNode> targets) throws NumberFormatException, EvaluationException {
 		if(!visited){
-			OperatorDictionary op= new OperatorDictionary(toStringNorecursive(), String.format( "%.2f", getCost() ), getStatus(bestPlans), isOperator+"", toKeyValueString(delimiter));
+			OperatorDictionary op= new OperatorDictionary(toStringNorecursive(), String.format( "%.2f", getCost() ), 
+					getStatus(bestPlans), isOperator+"", toKeyValueString(delimiter), targets.contains(this));
 			
 			for(WorkflowNode n : inputs){
 				op.addInput(n.toStringNorecursive());
-				n.toWorkflowDictionary(ret, bestPlans, delimiter);
+				n.toWorkflowDictionary(ret, bestPlans, delimiter, targets);
 			}
 	    	ret.addOperator(op);
 			visited=true;
@@ -514,7 +543,15 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		    	if(arg.startsWith("In")){
 		    		int index = Integer.parseInt(arg.charAt(2)+"");
 		    		WorkflowNode n = inputs.get(index);
-		    		boolean dataset = false;
+		    		String parameter =arg.substring(arg.indexOf(".")+1);
+		    		String newArg = n.dataset.getParameter("Execution."+parameter);
+		    		logger.info("newArg: "+newArg);
+		    		if(parameter.equals("path")){
+		    			newArg = newArg.substring(newArg.lastIndexOf("/")+1, newArg.length());
+		    			logger.info("newArg path: "+newArg);
+		    		}
+		    		arg=newArg;
+		    		/*boolean dataset = false;
 		    		while(!n.isOperator){
 		    			if(n.inputs.isEmpty()){
 		    				arg = n.dataset.datasetName;
@@ -526,7 +563,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		    			}
 		    		}
 		    		if(!dataset)
-		    			arg = n.operator.getParameter("Execution.Output0.fileName");
+		    			arg = n.operator.getParameter("Execution.Output0.path");*/
 		    	}
 		    	ret+= arg+" ";
 			}
@@ -539,8 +576,12 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		if(!isOperator)
 			return ret;
 		else{
+			for(WorkflowNode in : inputs){
+				String path = in.dataset.getParameter("Execution.path");
 
-		    for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number"))-1; i++) {
+		    	ret.put(path.substring(path.lastIndexOf("/")+1),path);
+			}
+		    /*for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number"))-1; i++) {
 		    	String arg = operator.getParameter("Execution.Argument"+i);
 		    	String operatorName = "";
 		    	if(arg.startsWith("In")){
@@ -563,9 +604,13 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		    		}
 		    	}
 		    	ret.put(arg,operatorName);
-			}
+			}*/
 			return ret;
 		}
 	}
 
+	private boolean isDataset() {
+		return !isOperator;
+	}
 }
+

@@ -38,6 +38,7 @@ public class WorkflowDictionary {
 	}
 
 	public void setOutputsRunning(String name) {
+		
 		for(OperatorDictionary op: operators){
 			if(op.getIsOperator().equals("false") && op.getStatus().equals("warn")){
 				for(String op1 : op.getInput()){

@@ -381,6 +381,7 @@ public class WebUI {
     public String datasetDescription(@PathParam("id") String id) throws IOException {
     	String ret = header;
     	ret+= "<h1>"+id+"</h1>";
+    	ret+= opTreeUp+"\"/datasets/json/"+id+"\";"+opTreeLow;
     	ret += "<form action=\"/web/datasets/editDataset\" method=\"get\">"
 			+ "<textarea rows=\"40\" cols=\"150\" name=\"dString\">"+DatasetLibrary.getDatasetDescription(id)+"</textarea>"
 			+ "<input type=\"hidden\" name=\"dname\" value=\""+id+"\">"

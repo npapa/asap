@@ -167,7 +167,7 @@ public class AbstractWorkflow1 {
 		File[] files = folder.listFiles();
 
 		for (int i = 0; i < files.length; i++) {
-			if (files[i].isFile()) {
+			if (files[i].isFile() && !files[i].isHidden()) {
 				WorkflowNode n = new WorkflowNode(true, true);
 				AbstractOperator temp = new AbstractOperator(files[i].getName());
 				temp.readPropertiesFromFile(files[i]);
@@ -179,7 +179,7 @@ public class AbstractWorkflow1 {
 		files = folder.listFiles();
 
 		for (int i = 0; i < files.length; i++) {
-			if (files[i].isFile()) {
+			if (files[i].isFile() && !files[i].isHidden()) {
 				WorkflowNode n =null;
 				if(files[i].getName().startsWith("d")){
 					n = new WorkflowNode(false, true);
@@ -322,7 +322,8 @@ public class AbstractWorkflow1 {
 	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws NumberFormatException, EvaluationException {
 		WorkflowDictionary ret = new WorkflowDictionary();
 		for(WorkflowNode n : workflowNodes.values()){
-	    	OperatorDictionary op = new OperatorDictionary(n.toStringNorecursive(), n.getCost()+"", n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.toKeyValueString(delimiter));
+	    	OperatorDictionary op = new OperatorDictionary(n.toStringNorecursive(), n.getCost()+"", 
+	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.toKeyValueString(delimiter), targets.contains(n));
 
 			for(WorkflowNode in : n.inputs){
 				op.addInput(in.toStringNorecursive());
@@ -339,7 +340,7 @@ public class AbstractWorkflow1 {
 		}
 		WorkflowDictionary ret = new WorkflowDictionary();
     	for(WorkflowNode target : targets){
-    		target.toWorkflowDictionary(ret, new HashMap<String, List<WorkflowNode>>(), delimiter);
+    		target.toWorkflowDictionary(ret, new HashMap<String, List<WorkflowNode>>(), delimiter, targets);
     	}
 		return ret;
 	}

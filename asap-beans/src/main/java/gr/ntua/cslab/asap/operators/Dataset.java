@@ -1,5 +1,6 @@
 package gr.ntua.cslab.asap.operators;
 
+import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
 
 import java.io.ByteArrayInputStream;
@@ -119,6 +120,18 @@ public class Dataset implements Comparable<Dataset> {
 
 	public String getParameter(String key) {
 		return datasetTree.getParameter(key);
+	}
+
+	public OperatorDescription toOperatorDescription() {
+		OperatorDescription ret = new OperatorDescription(datasetName, "");
+		datasetTree.toOperatorDescription(ret);
+		return ret;
+	}
+
+	public void copyExecPath(Dataset dataset, int i) {
+		String path = datasetTree.getParameter("Execution.path");
+		if(path!=null)
+			dataset.add("Execution.path", path);
 	}
 
 

@@ -11,23 +11,33 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OperatorDictionary {
 	private String name, cost, status, isOperator, description;
+	private boolean isTarget;
 	private List<String> input;
 	
 	public OperatorDictionary() {
 		input = new ArrayList<String>();
 	}
 	
-	public OperatorDictionary(String name, String cost, String status, String isOperator, String description) {
+	public OperatorDictionary(String name, String cost, String status, String isOperator, String description, boolean isTarget) {
 		this.name = name;
 		this.cost = cost;
 		this.status = status;
 		this.isOperator = isOperator;
 		this.description = description;
+		this.isTarget = isTarget;
 		input = new ArrayList<String>();
 	}
 	
 	public String getStatus() {
 		return status;
+	}
+
+	public boolean isTarget() {
+		return isTarget;
+	}
+
+	public void setTarget(boolean isTarget) {
+		this.isTarget = isTarget;
 	}
 
 	public void setStatus(String status) {
