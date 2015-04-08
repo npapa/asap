@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -281,8 +282,15 @@ public class Operator {
 
 	public void copyExecPath(Dataset d, int position){
 		String path = optree.getParameter("Execution.Output"+position+".path");
-		if(path!=null)
-			d.add("Execution.path", opName+"/"+path);
+		if(path!=null){
+			if(path.startsWith("$HDFS_OP_DIR")){
+				String newPath = path.replace("$HDFS_OP_DIR", "$HDFS_DIR/"+opName);
+				d.add("Execution.path", newPath);
+			}
+			else{
+				d.add("Execution.path", opName+"/"+path);
+			}
+		}
 	}
 	
 	public void outputFor(Dataset d, int position, List<WorkflowNode> inputs) {
@@ -474,21 +482,27 @@ public class Operator {
 		File file = new File(directory);
 		Utils.deleteDirectory(file);
 	}
-
+	
+	@Override
+	protected Operator clone() throws CloneNotSupportedException {
+		Operator ret = new Operator(opName, directory);
+		ret.optree = optree.clone();
+		return ret;
+	}
 
 
 
 	public static void main(String[] args) throws Exception {
-//		Operator op = new Operator("HBase_HashJoin");
-//		op.add("Constraints.Input.number","2");
-//		op.add("Constraints.Output.number","1");
-//		op.add("Constraints.Input0.DataInfo.Attributes.number","2");
-//		op.add("Constraints.Input0.DataInfo.Attributes.Atr1.type","ByteWritable");
-//		op.add("Constraints.Input0.DataInfo.Attributes.Atr2.type","List<ByteWritable>");
-//		op.add("Constraints.Input0.Engine.DB.NoSQL.HBase.key","Atr1");
-//		op.add("Constraints.Input0.Engine.DB.NoSQL.HBase.value","Atr2");
-//		op.add("Constraints.Input0.Engine.DB.NoSQL.HBase.location","127.0.0.1");
-//
+		Operator op = new Operator("HBase_HashJoin","");
+		op.add("Constraints.Input.number","2");
+		op.add("Constraints.Output.number","1");
+		op.add("Constraints.Input0.DataInfo.Attributes.number","2");
+		op.add("Constraints.Input0.DataInfo.Attributes.Atr1.type","ByteWritable");
+		op.add("Constraints.Input0.DataInfo.Attributes.Atr2.type","List<ByteWritable>");
+		op.add("Constraints.Input0.Engine.DB.NoSQL.HBase.key","Atr1");
+		op.add("Constraints.Input0.Engine.DB.NoSQL.HBase.value","Atr2");
+		op.add("Constraints.Input0.Engine.DB.NoSQL.HBase.location","127.0.0.1");
+
 //		op.add("Constraints.Input1.DataInfo.Attributes.number","2");
 //		op.add("Constraints.Input1.DataInfo.Attributes.Atr1.type","ByteWritable");
 //		op.add("Constraints.Input1.DataInfo.Attributes.Atr2.type","List<ByteWritable>");
@@ -511,12 +525,22 @@ public class Operator {
 //		op.add("Optimization.model", "gr.ntua.ece.cslab.panic.core.models.UserFunction");
 //		op.add("Optimization.inputSpace.In0.uniqueKeys", "Double,1.0,1E10,l");
 //		op.add("Optimization.inputSpace.In1.uniqueKeys", "Double,1.0,1E10,l");
-//		op.add("Optimization.inputSpace.cores", "Double,1.0,40.0,5.0");
-//		op.add("Optimization.outputSpace.execTime", "Double");
-//		op.add("Optimization.outputSpace.Out0.uniqueKeys", "Integer");
-//		op.add("Optimization.execTime", "100.0 + (In0.uniqueKeys + In1.uniqueKeys)/cores");
-//		op.add("Optimization.Out0.uniqueKeys", "In0.uniqueKeys + In1.uniqueKeys");
-		Operator op = new Operator("HBase_HashJoin","/Users/npapa/Documents/workspace/asap/asapLibrary/operators/Sort");
+		op.add("Optimization.inputSpace.cores", "Double,1.0,40.0,5.0");
+		op.add("Optimization.outputSpace.execTime", "Double");
+		op.add("Optimization.outputSpace.Out0.uniqueKeys", "Integer");
+		op.add("Optimization.execTime", "100.0 + (In0.uniqueKeys + In1.uniqueKeys)/cores");
+		op.add("Optimization.Out0.uniqueKeys", "In0.uniqueKeys + In1.uniqueKeys");
+		
+		Operator op1 = op.clone();
+		System.out.println(op1.toKeyValues("\n"));
+		System.out.println(op1.getParameter("Optimization.Out0.uniqueKeys"));
+		op.add("Optimization.Out0.uniqueKeys", "In0.uniqueKeys");
+		System.out.println(op1.getParameter("Optimization.Out0.uniqueKeys"));
+		System.out.println(op.getParameter("Optimization.Out0.uniqueKeys"));
+		System.exit(0);
+		
+		
+		Operator op2 = new Operator("HBase_HashJoin","/Users/npapa/Documents/workspace/asap/asapLibrary/operators/Sort");
 
 		op.readFromDir();
 		op.writeCSVfileUniformSampleOfModel("Out0.size", 1.0, "test.csv", ",");
@@ -526,7 +550,7 @@ public class Operator {
 		
 		System.exit(0);
 		
-		op.add("Constraints.Input1.DataInfo.Attributes.number","2");
+		/*op.add("Constraints.Input1.DataInfo.Attributes.number","2");
 		op.add("Constraints.Input1.DataInfo.Attributes.Atr1.type","ByteWritable");
 		op.add("Constraints.Input1.DataInfo.Attributes.Atr2.type","List<ByteWritable>");
 		op.add("Constraints.Input1.Engine.DB.NoSQL.HBase.key","Atr1");
@@ -579,7 +603,7 @@ public class Operator {
 		op1.add("Constraints.OpSpecification.Algorithm.Join.JoinCondition","in1.atr1 = in2.atr2");
 		op1.add("Constraints.OpSpecification.Algorithm.Join.type", "MergeJoin");
 		
-		op1.writeToPropertiesFile("/home/nikos/test1");
+		op1.writeToPropertiesFile("/home/nikos/test1");*/
 
 		System.exit(0);
 		AbstractOperator abstractOp = new AbstractOperator("JoinOp");
@@ -600,11 +624,6 @@ public class Operator {
 		long stop = System.currentTimeMillis();
 		System.out.println("Time (s): "+((double)(stop-start))/1000.0);
 	}
-
-
-
-
-
 
 
 

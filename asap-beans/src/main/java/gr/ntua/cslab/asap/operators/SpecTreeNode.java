@@ -274,9 +274,28 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 	public int compareTo(SpecTreeNode o) {
 		return this.name.compareTo(o.name);
 	}
-
+	
+	
 
 	
+	@Override
+	public SpecTreeNode clone() throws CloneNotSupportedException {
+		SpecTreeNode ret = new SpecTreeNode(this.name);
+		if(children.size()==0){
+			//leaf
+			ret.name = new String(this.name);
+			ret.value = new String(this.value);
+		}
+		else{
+			for(SpecTreeNode n : children.values()){
+				SpecTreeNode temp = n.clone();
+				ret.children.put(new String(temp.getName()), temp);
+			}
+		}
+		return ret;
+	}
+
+
 	public SpecTreeNode copyInputToOpSubTree(String prefix, String inout) {
 		SpecTreeNode ret = new SpecTreeNode(this.name);
 		if(prefix==null){//copy all

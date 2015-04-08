@@ -174,6 +174,17 @@ public class SpecTree {
 		
 	}
 	
+
+	public SpecTree clone() throws CloneNotSupportedException {
+		SpecTree ret =  new SpecTree();
+		ret.tree = new TreeMap<String, SpecTreeNode>();
+		for(Entry<String, SpecTreeNode> e: tree.entrySet()){
+			ret.tree.put(new String(e.getKey()), e.getValue().clone());
+		}
+		return ret;
+	}
+
+	
 	public SpecTree copyInputSubTree(String prefix) {
 		SpecTree ret =  new SpecTree();
 

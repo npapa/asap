@@ -1,5 +1,5 @@
 -- The command to execute.
-SHELL_COMMAND = "weka_tfidf.sh"
+SHELL_COMMAND = "./kmeans_mahout.sh"
 -- The number of containers to run it on.
 CONTAINER_INSTANCES = 1
 -- The location of the jar file containing kitten's default ApplicationMaster
@@ -14,7 +14,7 @@ base_resources = {
   ["master.jar"] = { file = MASTER_JAR_LOCATION }
 }
 base_env = {
-  CLASSPATH = table.concat({"${CLASSPATH}", CP, "./master.jar", "./weka_tfidf.sh"}, ":"),
+  CLASSPATH = table.concat({"${CLASSPATH}", CP, "./master.jar", "./kmeans_mahout.sh"}, ":"),
 }
 
 -- The actual distributed shell job.
@@ -36,8 +36,8 @@ kmeans_mahout = yarn {
     instances = CONTAINER_INSTANCES,
     env = base_env,
     resources = {
-    ["weka_tfidf.sh"] = {
-       file = "/opt/npapa/asap-server/asapLibrary/operators/TF_IDF_weka/weka_tfidf.sh",
+    ["kmeans_mahout.sh"] = {
+       file = "/opt/npapa/asap-server/asapLibrary/operators/kmeans_mahout/kmeans_mahout.sh",
       type = "file",               -- other value: 'archive'
       visibility = "application",  -- other values: 'private', 'public'
 	}

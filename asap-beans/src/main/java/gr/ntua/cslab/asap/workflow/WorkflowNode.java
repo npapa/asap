@@ -34,6 +34,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	public Dataset dataset;
 	public List<WorkflowNode> inputs;
 	private static Logger logger = Logger.getLogger(WorkflowNode.class.getName());
+	public boolean copyToLocal=false, copyToHDFS=false;
 	
 	public WorkflowNode(boolean isOperator, boolean isAbstract) {
 		this.isOperator = isOperator;
@@ -125,6 +126,17 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							}
 							else{
 								//check move
+								//hdfs-local move
+								/*WorkflowNode moveNoOp = new WorkflowNode(false, false);
+								moveNoOp.inputs.add(in);
+								Dataset temp2 = tempInput.clone();
+								moveNoOp.setDataset(tempInput);
+								String fs = temp2.getParameter("Constraints.Input"+i+".Engine.FS");
+								if(fs.equals("local")){
+									
+								}*/
+								
+								//generic move
 								logger.info("Check move ");
 								List<Operator> moveOps = OperatorLibrary.checkMove(in.dataset, tempInput);
 								if(!moveOps.isEmpty()){
@@ -537,20 +549,27 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			return "";
 		else{
 			String ret = "";
-
 		    for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number")); i++) {
 		    	String arg = operator.getParameter("Execution.Argument"+i);
 		    	if(arg.startsWith("In")){
 		    		int index = Integer.parseInt(arg.charAt(2)+"");
 		    		WorkflowNode n = inputs.get(index);
 		    		String parameter =arg.substring(arg.indexOf(".")+1);
-		    		String newArg = n.dataset.getParameter("Execution."+parameter);
-		    		logger.info("newArg: "+newArg);
-		    		if(parameter.equals("path")){
+		    		if(parameter.endsWith("local")){
+		    			parameter=parameter.replace(".local", "");
+		    			logger.info("parameter: "+parameter);
+		    			
+		    			String newArg = n.dataset.getParameter("Execution."+parameter);
+		    			logger.info("newArg: "+newArg);
 		    			newArg = newArg.substring(newArg.lastIndexOf("/")+1, newArg.length());
-		    			logger.info("newArg path: "+newArg);
+		    			logger.info("local path: "+newArg);
+			    		arg=newArg;
 		    		}
-		    		arg=newArg;
+		    		else{
+			    		String newArg = n.dataset.getParameter("Execution."+parameter);
+			    		logger.info("newArg: "+newArg);
+			    		arg=newArg;
+		    		}
 		    		/*boolean dataset = false;
 		    		while(!n.isOperator){
 		    			if(n.inputs.isEmpty()){
@@ -570,17 +589,47 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			return ret;
 		}
 	}
-
+	public List<String> getOutputFiles() {
+		List<String> ret = new ArrayList<String>();
+		if(!isOperator)
+			return ret;
+		else{
+			String outFiles = operator.getParameter("Execution.copyFromLocal");
+			if(outFiles==null)
+				return ret;
+			String[] files = outFiles.split(",");
+			for (int i = 0; i < files.length; i++) {
+			    ret.add(files[i]);
+			}
+			return ret;
+		}
+	}
+	
 	public HashMap<String, String> getInputFiles() {
 		HashMap<String, String> ret = new HashMap<String, String>();
 		if(!isOperator)
 			return ret;
 		else{
-			for(WorkflowNode in : inputs){
+			String inFiles = operator.getParameter("Execution.copyToLocal");
+			if(inFiles==null)
+				return ret;
+			String[] files = inFiles.split(",");
+			for (int i = 0; i < files.length; i++) {
+				if(files[i].startsWith("In")){
+					int index = Integer.parseInt(files[i].charAt(2)+"");
+		    		WorkflowNode n = inputs.get(index);
+					String path = n.dataset.getParameter("Execution.path");
+			    	ret.put(path.substring(path.lastIndexOf("/")+1),path);
+				}
+				else{
+			    	ret.put(files[i].substring(files[i].lastIndexOf("/")+1),files[i]);
+				}
+			}
+			/*for(WorkflowNode in : inputs){
 				String path = in.dataset.getParameter("Execution.path");
 
 		    	ret.put(path.substring(path.lastIndexOf("/")+1),path);
-			}
+			}*/
 		    /*for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number"))-1; i++) {
 		    	String arg = operator.getParameter("Execution.Argument"+i);
 		    	String operatorName = "";

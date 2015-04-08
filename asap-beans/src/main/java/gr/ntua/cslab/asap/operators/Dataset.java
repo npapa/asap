@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 public class Dataset implements Comparable<Dataset> {
 
+
 	public SpecTree datasetTree;
 	public String datasetName;
 	private static Logger logger = Logger.getLogger(Dataset.class.getName());
@@ -27,6 +28,13 @@ public class Dataset implements Comparable<Dataset> {
 		datasetName = name;
 	}
 
+	@Override
+	public Dataset clone() throws CloneNotSupportedException {
+		Dataset ret = new Dataset(datasetName);
+		ret.datasetTree = datasetTree.clone();
+		return ret;
+	}
+	
 	public void add(String key, String value) {
 		datasetTree.add(key,value);
 	}
