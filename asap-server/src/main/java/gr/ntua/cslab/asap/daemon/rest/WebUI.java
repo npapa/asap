@@ -620,7 +620,7 @@ public class WebUI {
     	String ret ="metrics,cost,execTime\n";
     	ret+="groupInputs,execTime,max\n";
     	ret+="groupInputs,cost,sum\n";
-    	ret+="function,2*cost+3*execTime,min";
+    	ret+="function,execTime,min";
     	return ret;
 	}
     

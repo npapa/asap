@@ -51,5 +51,11 @@ public class WorkflowDictionary {
 		}
 		
 	}
+
+	public void replaceDescription(String target, String replacement) {
+		for(OperatorDictionary op : operators){
+			op.setDescription(op.getDescription().replace(target, replacement));
+		}
+	}
 	
 }

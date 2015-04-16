@@ -51,8 +51,9 @@ public class RunningWorkflowLibrary {
 		return runningServices;
 	}
 	
-	public static WorkflowDictionary getWorkflow(String name) throws NumberFormatException, EvaluationException{
+	public static WorkflowDictionary getWorkflow(String name) throws Exception{
 		WorkflowDictionary wd = runningWorkflows.get(name);
+		wd.replaceDescription("\n","<br>");
 		/*Random r = new Random();
 		for(OperatorDictionary op: wd.getOperators()){
 			if(r.nextBoolean()){
@@ -62,6 +63,7 @@ public class RunningWorkflowLibrary {
 				op.setStatus("stopped");
 			}
 		}*/
+		//return mw.toWorkflowDictionary("<br>");
 		return wd;
 	}
 

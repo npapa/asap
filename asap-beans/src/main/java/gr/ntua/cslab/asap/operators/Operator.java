@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -293,15 +294,15 @@ public class Operator {
 		}
 	}
 	
-	public void outputFor(Dataset d, int position, List<WorkflowNode> inputs) {
+	public void outputFor(Dataset d, int position, List<WorkflowNode> inputs) throws Exception {
 		//System.out.println("Generating output for pos: "+ position);
 		d.datasetTree = optree.copyInputSubTree("Constraints.Output"+position);
 		if(d.datasetTree == null)
 			d.datasetTree = new SpecTree();
 		
 		copyExecPath(d,position);
-		
-		int min = Integer.MAX_VALUE;
+		generateOptimizationMetrics(d,position,inputs);
+		/*int min = Integer.MAX_VALUE;
 		for(WorkflowNode n :inputs){
 			int temp = Integer.MAX_VALUE;
 			if(!n.inputs.get(0).isOperator)
@@ -312,9 +313,20 @@ public class Operator {
 				min=temp;
 			}
 		}
-		d.datasetTree.add("Optimization.uniqueKeys", min+"");
+		d.datasetTree.add("Optimization.uniqueKeys", min+"");*/
 	}
 	
+	public void generateOptimizationMetrics(Dataset d, int position,List<WorkflowNode> inputs) throws Exception {
+		for(String out : outputSpace.keySet()){
+			if(out.startsWith("Out"+position)){
+	    		String[] s = out.split("\\.");
+				d.add("Optimization."+s[1], getMettric(out, inputs)+"");
+			}
+		}
+		
+	}
+
+
 	public void writeToPropertiesFile(String directory) throws Exception {
         File dir = new File(directory);
         if (!dir.exists()) {
@@ -371,6 +383,15 @@ public class Operator {
 	public Double getMettric(String metric, List<WorkflowNode> inputs) throws Exception{
 		//System.out.println(metric);
 		Model model = models.get(metric).get(0);
+		if(!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)){
+			for(Model m:models.get(metric)){
+				if(m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.MLPerceptron.class)){
+					model =m;
+					break;
+				}
+			}
+		}
+		System.out.println(model.getClass());
 		//System.out.println(opName);
 		//System.out.println("inputs: "+inputs);
 
@@ -391,7 +412,14 @@ public class Operator {
 	    		if(val==null){
 	    			val ="10.0";
 	    		}
+	    		Double maxVal = Double.parseDouble(inputSpace.get(inVar).split(",")[2]);
+	    		
 	    		Double v = Double.parseDouble(val);
+	    		if(v>maxVal && !model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)){
+	    			//System.out.println("found: "+v+" : "+maxVal);
+	    			Random r = new Random();
+	    			return 750+r.nextDouble()*500;
+	    		}
     			//System.out.println("in value "+ v);
     			values.put(inVar, v);			
     		}

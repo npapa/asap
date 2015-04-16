@@ -36,7 +36,7 @@ public class RunningWorkflows {
 	@GET
 	@Produces("application/json")
 	@Path("/{id}/")
-    public WorkflowDictionary getDescription(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+    public WorkflowDictionary getDescription(@PathParam("id") String id) throws Exception {
         return RunningWorkflowLibrary.getWorkflow(id);
     }
 
@@ -55,7 +55,7 @@ public class RunningWorkflows {
 	@GET
 	@Produces("application/XML")
 	@Path("/XML/{id}/")
-    public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+    public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws Exception {
         return RunningWorkflowLibrary.getWorkflow(id);
     }
 	

@@ -113,12 +113,12 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								logger.info("true");
 								inputMatches=true;
 								tempInputNode.addInput(in);
-								if(materializedWorkflow.functionTarget.contains("min") && dpTable.getCost(in.dataset)<operatorOneInputCost){
+								if(materializedWorkflow.functionTarget.contains("min") && dpTable.getCost(in.dataset)<=operatorOneInputCost){
 									operatorOneInputCost=dpTable.getCost(in.dataset);
 									oneInputMetrics = dpTable.getMetrics(in.dataset);
 									bestInput = in;
 								}
-								if(materializedWorkflow.functionTarget.contains("max") && dpTable.getCost(in.dataset)>operatorOneInputCost){
+								if(materializedWorkflow.functionTarget.contains("max") && dpTable.getCost(in.dataset)>=operatorOneInputCost){
 									operatorOneInputCost=dpTable.getCost(in.dataset);
 									oneInputMetrics = dpTable.getMetrics(in.dataset);
 									bestInput = in;
@@ -150,7 +150,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 										moveNode.setOptimalCost(m.getMettric(metric, moveNode.inputs));
 										Double tempCost = dpTable.getCost(in.dataset)+moveNode.getCost();
 										
-										if(materializedWorkflow.functionTarget.contains("min") && tempCost<operatorOneInputCost){
+										if(materializedWorkflow.functionTarget.contains("min") && tempCost<=operatorOneInputCost){
 											operatorOneInputCost=tempCost;
 											HashMap<String, Double> prevMetrics = dpTable.getMetrics(in.dataset);
 											oneInputMetrics = new HashMap<String, Double>();
@@ -160,7 +160,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 											bestInput=moveNode;
 										}
 
-										if(materializedWorkflow.functionTarget.contains("max") && tempCost>operatorOneInputCost){
+										if(materializedWorkflow.functionTarget.contains("max") && tempCost>=operatorOneInputCost){
 											operatorOneInputCost=tempCost;
 											HashMap<String, Double> prevMetrics = dpTable.getMetrics(in.dataset);
 											oneInputMetrics = new HashMap<String, Double>();
@@ -210,6 +210,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							}
 							else{
 								bin.dataset.copyExecPath(tin.dataset,0);
+								bin.dataset.copyOptimization(tin.dataset);
+								
 							}
 							i++;
 						}
