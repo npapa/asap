@@ -391,7 +391,7 @@ public class Operator {
 				}
 			}
 		}
-		System.out.println(model.getClass());
+		//System.out.println(model.getClass());
 		//System.out.println(opName);
 		//System.out.println("inputs: "+inputs);
 

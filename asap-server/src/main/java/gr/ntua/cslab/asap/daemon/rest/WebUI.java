@@ -63,6 +63,7 @@ public class WebUI {
     public String listAbstractOperators() throws IOException {
     	String ret = header;
     	List<String> l = AbstractOperatorLibrary.getOperators();
+    	ret+= "<h2>Abstract Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
 			ret+= "<li><a href=\"/web/abstractOperators/"+op+"\">"+op+"</a></li>";
@@ -86,7 +87,7 @@ public class WebUI {
     @Path("/abstractOperators/{id}/")
     public String abstractOperatorDescription(@PathParam("id") String id) throws IOException {
     	String ret = header;
-    	ret+= "<h1>"+id+"</h1>";
+    	ret+= "<h2>Abstract Operator: "+id+"</h2>";
 
     	ret+= opTreeUp+"\"/abstractOperators/json/"+id+"\";"+opTreeLow;
     	
@@ -118,6 +119,7 @@ public class WebUI {
     public String checkAbstractOperatorMatches(
             @QueryParam("opname") String opname) throws IOException {
     	String ret = header;
+    	ret+= "<h2>Matches for: "+opname+"</h2>";
     	List<Operator> l = OperatorLibrary.getMatches(AbstractOperatorLibrary.getOperator(opname));
     	ret += "<ul>";
     	for(Operator op : l){
@@ -137,6 +139,7 @@ public class WebUI {
     	AbstractOperatorLibrary.deleteOperator(opname);
     	AbstractOperatorLibrary.addOperator(opname, opString);
     	List<String> l = AbstractOperatorLibrary.getOperators();
+    	ret+= "<h2>Abstract Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
 			ret+= "<li><a href=\"/web/abstractOperators/"+op+"\">"+op+"</a></li>";
@@ -161,6 +164,7 @@ public class WebUI {
     	String ret = header;
     	AbstractOperatorLibrary.deleteOperator(opname);
     	List<String> l = AbstractOperatorLibrary.getOperators();
+    	ret+= "<h2>Abstract Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
 			ret+= "<li><a href=\"/web/abstractOperators/"+op+"\">"+op+"</a></li>";
@@ -188,6 +192,7 @@ public class WebUI {
     	String ret = header;
     	AbstractOperatorLibrary.addOperator(opname, opString);
     	List<String> l = AbstractOperatorLibrary.getOperators();
+    	ret+= "<h2>Abstract Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
 			ret+= "<li><a href=\"/web/abstractOperators/"+op+"\">"+op+"</a></li>";
@@ -212,6 +217,7 @@ public class WebUI {
     public String listOperators() throws IOException {
     	String ret = header;
     	List<String> l = OperatorLibrary.getOperators();
+    	ret+= "<h2>Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
 			ret+= "<li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
@@ -235,7 +241,7 @@ public class WebUI {
     @Path("/operators/{id}/")
     public String operatorDescription(@PathParam("id") String id) throws IOException {
     	String ret = header;
-    	ret+= "<h1>"+id+"</h1><br>";
+    	ret+= "<h2>Operator: "+id+"</h2><br>";
     	ret+="<form action=\"/web/operators/operatorProfile\" method=\"get\">"
     			+ "<input type=\"hidden\" name=\"opname\" value=\""+id+"\">"
     			+ "Profile variable:<select name=\"variable\">";
@@ -273,7 +279,10 @@ public class WebUI {
     public String operatorProfile(@QueryParam("opname") String opname,@QueryParam("variable") String variable, @QueryParam("profileType") String profileType) throws Exception {
     	String csv = OperatorLibrary.getProfile(opname, variable,profileType);
     	//csv="/mahout_kmeans_synth.csv";
-    	String ret = header + scatterPlot.replace("$$", csv)+ footer;
+    	String ret = header;
+
+    	ret+= "<h2>Operator profile: "+opname+"</h2>";
+    	ret+=scatterPlot.replace("$$", csv)+ footer;
     	return ret;
     }
     
@@ -284,6 +293,7 @@ public class WebUI {
     	String ret = header;
     	OperatorLibrary.editOperator(opname, opString);
     	List<String> l = OperatorLibrary.getOperators();
+    	ret+= "<h2>Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
 			ret+= "<li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
@@ -306,6 +316,7 @@ public class WebUI {
     public String deleteOperator(
             @QueryParam("opname") String opname) throws IOException {
     	String ret = header;
+    	ret+= "<h2>Operators</h2>";
     	OperatorLibrary.deleteOperator(opname);
     	List<String> l = OperatorLibrary.getOperators();
     	ret += "<ul>";
@@ -331,6 +342,7 @@ public class WebUI {
             @QueryParam("opname") String opname,
             @QueryParam("opString") String opString) throws Exception {
     	String ret = header;
+    	ret+= "<h2>Operators</h2>";
     	OperatorLibrary.addOperator(opname, opString);
     	List<String> l = OperatorLibrary.getOperators();
     	ret += "<ul>";
@@ -356,6 +368,7 @@ public class WebUI {
     @Path("/datasets/")
     public String listDatasets() throws IOException {
     	String ret = header;
+    	ret+= "<h2>Datasets</h2>";
     	List<String> l = DatasetLibrary.getDatasets();
     	ret += "<ul>";
     	for(String d : l){
@@ -380,7 +393,7 @@ public class WebUI {
     @Path("/datasets/{id}/")
     public String datasetDescription(@PathParam("id") String id) throws IOException {
     	String ret = header;
-    	ret+= "<h1>"+id+"</h1>";
+    	ret+= "<h2>Dataset: "+id+"</h2>";
     	ret+= opTreeUp+"\"/datasets/json/"+id+"\";"+opTreeLow;
     	ret += "<form action=\"/web/datasets/editDataset\" method=\"get\">"
 			+ "<textarea rows=\"40\" cols=\"150\" name=\"dString\">"+DatasetLibrary.getDatasetDescription(id)+"</textarea>"
@@ -400,6 +413,7 @@ public class WebUI {
     @Produces(MediaType.TEXT_HTML)
     public String editDataset(@QueryParam("dname") String dname,@QueryParam("dString") String dString) throws IOException {
     	String ret = header;
+    	ret+= "<h2>Datasets</h2>";
     	DatasetLibrary.deleteDataset(dname);
     	DatasetLibrary.addDataset(dname, dString);
     	List<String> l = DatasetLibrary.getDatasets();
@@ -425,6 +439,7 @@ public class WebUI {
     public String deleteDataset(
             @QueryParam("dname") String dname) throws IOException {
     	String ret = header;
+    	ret+= "<h2>Datasets</h2>";
     	DatasetLibrary.deleteDataset(dname);
     	List<String> l = DatasetLibrary.getDatasets();
     	ret += "<ul>";
@@ -450,6 +465,7 @@ public class WebUI {
             @QueryParam("dname") String dname,
             @QueryParam("dString") String dString) throws IOException {
     	String ret = header;
+    	ret+= "<h2>Datasets</h2>";
     	DatasetLibrary.addDataset(dname, dString);
     	List<String> l = DatasetLibrary.getDatasets();
     	ret += "<ul>";
@@ -476,6 +492,7 @@ public class WebUI {
     @Path("/runningWorkflows/")
     public String listRunningWorkflows() throws IOException {
     	String ret = header;
+    	ret+= "<h2>Running Workflows</h2>";
     	ret += "<ul>";
 
     	List<String> l = RunningWorkflowLibrary.getWorkflows();
@@ -548,6 +565,7 @@ public class WebUI {
     @Path("/workflows/")
     public String listWorkflows() throws IOException {
     	String ret = header;
+    	ret+= "<h2>Workflows</h2>";
     	ret += "<ul>";
 
     	List<String> l = MaterializedWorkflowLibrary.getWorkflows();
@@ -569,6 +587,7 @@ public class WebUI {
     public String listAbstractWorkflows() throws IOException {
     	String ret = header;
 
+    	ret+= "<h2>Abstract Workflows</h2>";
     	List<String> l = AbstractWorkflowLibrary.getWorkflows();
     	ret += "<ul>";
     	for(String w : l){
