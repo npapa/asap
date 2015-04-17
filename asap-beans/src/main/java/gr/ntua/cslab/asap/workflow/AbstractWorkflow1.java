@@ -109,7 +109,7 @@ public class AbstractWorkflow1 {
 		return materializedWorkflow;
 	}
 	
-	private void parsePolicy(String policy) {
+	public String parsePolicy(String policy) {
 		groupInputs = new HashMap<String, String>();
 		String[] p = policy.split("\n");
 		for (int i = 0; i < p.length; i++) {
@@ -122,9 +122,22 @@ public class AbstractWorkflow1 {
 				functionTarget=p1[2];
 			}
 		}
+		return optimizationFunction;
 		//System.out.println(functionTarget);
 	}
 
+	public static String getPolicyFromString(String policy) {
+		String[] p = policy.split("\n");
+		for (int i = 0; i < p.length; i++) {
+			String[] p1 = p[i].split(",");
+			if(p1[0].equals("function")){
+				return p1[1];
+			}
+		}
+		return "";
+		//System.out.println(functionTarget);
+	}
+	
 	public void writeToDir(String directory) throws Exception {
 
 		for(WorkflowNode t : targets){

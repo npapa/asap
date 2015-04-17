@@ -71,6 +71,7 @@
 		xmlhttp.onreadystatechange=function()
   		{
     		document.getElementById("trackingURL").innerHTML=xmlhttp.responseText;
+    		document.getElementById("trackingURL").href=xmlhttp.responseText;
     		if(!(xmlhttp.responseText.length === 0)){
     			foundURL=true;
     		}

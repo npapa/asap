@@ -703,7 +703,7 @@ public class WebUI {
     public String materializeAbstractWorkflow(@QueryParam("workflowName") String workflowName,
     		@QueryParam("policy") String policy) throws Exception{
     	String mw = AbstractWorkflowLibrary.getMaterializedWorkflow(workflowName,policy);
-    	String ret = header+"Optimal cost: "+MaterializedWorkflowLibrary.get(mw).optimalCost;
+    	String ret = header+"Optimal result for policy function: <br>"+AbstractWorkflow1.getPolicyFromString(policy)+" = "+MaterializedWorkflowLibrary.get(mw).optimalCost;
     	ret+="</div><div  class=\"mainpage\">";
     	
     	ret+=workflowUp+"/workflows/"+mw+workflowLow;
