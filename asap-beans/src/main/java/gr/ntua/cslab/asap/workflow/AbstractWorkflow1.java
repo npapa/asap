@@ -13,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -34,7 +35,7 @@ public class AbstractWorkflow1 {
 	private List<WorkflowNode> targets;
 	private List<WorkflowNode> abstractInputs;
 	private HashMap<String,WorkflowNode> workflowNodes;
-	public String name;
+	public String name, directory;
 	private static Logger logger = Logger.getLogger(AbstractWorkflow1.class.getName());
 	
 	public HashMap<String,String> groupInputs;
@@ -45,8 +46,16 @@ public class AbstractWorkflow1 {
 	public String toString() {
 		return targets.toString();
 	}
-	
+
 	public AbstractWorkflow1(String name) {
+		this.directory = "/tmp";
+		this.name=name;
+		targets = new ArrayList<WorkflowNode>();
+		workflowNodes = new HashMap<String, WorkflowNode>();
+	}
+	
+	public AbstractWorkflow1(String name, String directory) {
+		this.directory = directory;
 		this.name=name;
 		targets = new ArrayList<WorkflowNode>();
 		workflowNodes = new HashMap<String, WorkflowNode>();
@@ -226,6 +235,22 @@ public class AbstractWorkflow1 {
 		br.close();
 	}
 	
+
+	public void refresh() {
+		for(Entry<String, WorkflowNode> e : workflowNodes.entrySet()){
+			if(e.getValue().isOperator){
+				AbstractOperator abstractOp = AbstractOperatorLibrary.getOperator(e.getKey());
+				workflowNodes.get(e.getKey()).abstractOperator=abstractOp;
+			}
+			else if(!e.getValue().isAbstract){
+				Dataset d = DatasetLibrary.getDataset(e.getKey());
+				workflowNodes.get(e.getKey()).dataset=d;
+			}
+		}
+		
+	}
+
+	
 	public String graphToString() throws IOException {
 		ByteArrayOutputStream bs = new ByteArrayOutputStream();
 		BufferedWriter graphWritter = new BufferedWriter(new OutputStreamWriter(bs));
@@ -345,7 +370,6 @@ public class AbstractWorkflow1 {
 		}
 		return ret;
 	}
-	
 	
 	public WorkflowDictionary toWorkflowDictionaryRecursive(String delimiter) throws NumberFormatException, EvaluationException {
 		for(WorkflowNode t : targets){

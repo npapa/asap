@@ -149,8 +149,13 @@ public class OperatorLibrary {
     	}
     	else{
     		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
-			op.writeCSVfileUniformSampleOfModel(variable, 0.0, "www/test.csv", ",",true);
-			append("www/test.csv",csv.toString(),",", op.inputSpace);
+    		if(csv.exists()){
+				op.writeCSVfileUniformSampleOfModel(variable, 0.0, "www/test.csv", ",",true);
+				append("www/test.csv",csv.toString(),",", op.inputSpace);
+    		}
+    		else{
+				op.writeCSVfileUniformSampleOfModel(variable, 0.0, "www/test.csv", ",",true);
+    		}
     	}
 		//op.writeCSVfileUniformSampleOfModel(1.0, "www/test.csv", ",");
 		return "/test.csv";

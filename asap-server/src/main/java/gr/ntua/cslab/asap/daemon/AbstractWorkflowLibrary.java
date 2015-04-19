@@ -32,8 +32,8 @@ public class AbstractWorkflowLibrary {
 
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isDirectory()) {
-		        Logger.getLogger(OperatorLibrary.class.getName()).info("Loading operator: " + listOfFiles[i].getName());
-		        AbstractWorkflow1 w = new AbstractWorkflow1(listOfFiles[i].getName());
+		        Logger.getLogger(OperatorLibrary.class.getName()).info("Loading abstract workflow: " + listOfFiles[i].getName());
+		        AbstractWorkflow1 w = new AbstractWorkflow1(listOfFiles[i].getName(), listOfFiles[i].getPath());
 		        w.readFromDir(listOfFiles[i].getPath());
 		        abstractWorkflows.put(listOfFiles[i].getName(), w);
 		    }
@@ -63,6 +63,12 @@ public class AbstractWorkflowLibrary {
 		return aw.graphToString();
 	}
 
+
+	public static void refresh(String workflowName) {
+		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
+		aw.refresh();
+	}
+	
 	public static void changeWorkflow(String workflowName, String workflowGraph) throws IOException {
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
 		aw.changeEdges(workflowGraph);
@@ -70,7 +76,7 @@ public class AbstractWorkflowLibrary {
 	}
 	
 	public static void newWorkflow(String workflowName) {
-		AbstractWorkflow1 aw = new AbstractWorkflow1(workflowName);
+		AbstractWorkflow1 aw = new AbstractWorkflow1(workflowName, workflowDirectory+"/"+workflowName);
 		abstractWorkflows.put(workflowName, aw);
 	}
 
@@ -83,4 +89,5 @@ public class AbstractWorkflowLibrary {
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
 		aw.removeNode(type, name);
 	}
+
 }
