@@ -36,6 +36,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	private static Logger logger = Logger.getLogger(WorkflowNode.class.getName());
 	public boolean copyToLocal=false, copyToHDFS=false;
 	
+	
 	public WorkflowNode(boolean isOperator, boolean isAbstract) {
 		this.isOperator = isOperator;
 		this.isAbstract = isAbstract;
