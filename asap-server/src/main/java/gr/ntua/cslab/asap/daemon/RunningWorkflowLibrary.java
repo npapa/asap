@@ -89,7 +89,7 @@ public class RunningWorkflowLibrary {
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();
 		for(OperatorDictionary op : d.getOperators()){
 			if(op.getIsOperator().equals("true")){
-				operators.put(op.getName(), OperatorLibrary.operatorDirectory+"/"+op.getName()+"/"+op.getName()+".lua");
+				operators.put(op.getName(), OperatorLibrary.operatorDirectory+"/"+op.getNameNoID()+"/"+op.getNameNoID()+".lua");
 			}
 			else{
 				if(op.getInput().isEmpty()){

@@ -1,17 +1,5 @@
--- An example Kitten configuration file for the distributed shell app, running on
--- CDH4.
---
--- To execute, run:
---
--- hadoop jar kitten-client-0.2.0-jar-with-dependencies.jar distshell.lua distshell
---
--- from a directory that contains the client jar, the master jar, and distshell.lua.
---
--- You can also play with the SHELL_COMMAND, CONTAINER_INSTANCES, and
--- MASTER_JAR_LOCATION arguments as need be.
-
 -- The command to execute.
-SHELL_COMMAND = "${JAVA_HOME}/bin/java -Xms64m -Xmx128m gr.ntua.operatorTest.Operator"
+SHELL_COMMAND = "./HIVE_Join_Filter.sh"
 -- The number of containers to run it on.
 CONTAINER_INSTANCES = 1
 -- The location of the jar file containing kitten's default ApplicationMaster
@@ -26,15 +14,15 @@ base_resources = {
   ["master.jar"] = { file = MASTER_JAR_LOCATION }
 }
 base_env = {
-  CLASSPATH = table.concat({"${CLASSPATH}", CP, "./master.jar", "./test.jar"}, ":"),
+  CLASSPATH = table.concat({"${CLASSPATH}", CP, "./master.jar", "./HIVE_Join_Filter.sh"}, ":"),
 }
 
 -- The actual distributed shell job.
-HBase_HashJoin = yarn {
+operator = yarn {
   name = "Execute Java Operator",
   timeout = -1,
-  memory = 1024,
-  cores = 2,
+  memory = 6144,
+  cores = 1,
   master = {
     env = base_env,
     resources = base_resources,
@@ -47,10 +35,9 @@ HBase_HashJoin = yarn {
   container = {
     instances = CONTAINER_INSTANCES,
     env = base_env,
-    stageout = {"output"},
     resources = {
-    ["test.jar"] = {
-       file = "/opt/npapa/asapWorkflow/test.jar",
+    ["HIVE_Join_Filter.sh"] = {
+       file = "/opt/npapa/asap-server/asapLibrary/operators/HIVE_Join_Filter/HIVE_Join_Filter.sh",
       type = "file",               -- other value: 'archive'
       visibility = "application",  -- other values: 'private', 'public'
 	}

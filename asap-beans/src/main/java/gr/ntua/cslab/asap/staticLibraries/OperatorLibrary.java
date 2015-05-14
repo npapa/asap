@@ -28,7 +28,7 @@ public class OperatorLibrary {
 	private static HashMap<String,Operator> operators;
 	public static String operatorDirectory;
 	private static Logger logger = Logger.getLogger(OperatorLibrary.class.getName());
-	private static int moveid=0;
+	public static int moveid=0;
 	
 	public static void initialize(String directory) throws Exception{
 		operatorDirectory = directory;
@@ -54,6 +54,25 @@ public class OperatorLibrary {
 		List<String> ret = new ArrayList<String>();
 		for(Operator op : operators.values()){
 			ret.add(op.opName);
+		}
+		return ret;
+	}
+	
+	public static List<Operator> getMatchesNoIncrementID(AbstractOperator abstractOperator) throws Exception{
+		//logger.info("Check matches: "+abstractOperator.opName);
+		List<Operator> ret = new ArrayList<Operator>();
+		for(Operator op : operators.values()){
+			if(abstractOperator.checkMatch(op)){
+				Operator temp = new Operator(op.opName, op.directory);
+				temp.optree=op.optree.clone();
+				temp.inputSpace=op.inputSpace;
+				temp.outputSpace=op.outputSpace;
+				temp.models=op.models;
+				ret.add(temp);
+			}
+		}
+		for(Operator o :ret){
+			logger.info("Found: "+o.opName);
 		}
 		return ret;
 	}

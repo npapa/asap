@@ -5,3 +5,4 @@ Constraints.type=SQL
 Constraints.Engine.SQL=PostgreSQL
 Constraints.Engine.location=slave1
 Execution.name=customer
+Execution.schema=(CUSTKEY int, NAME varchar(25), ADDRESS varchar(40), NATIONKEY int, PHONE varchar(25), ACCTBAL float, MKTSEGMENT varchar(15), COMMENT varchar(120), LAST varchar(10))

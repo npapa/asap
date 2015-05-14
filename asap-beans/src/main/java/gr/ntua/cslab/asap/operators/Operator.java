@@ -281,8 +281,7 @@ public class Operator {
 		}
 	}
 
-	public void copyExecPath(Dataset d, int position){
-		String path = optree.getParameter("Execution.Output"+position+".path");
+	private void copyExecPath(Dataset d, String path){
 		if(path!=null){
 			if(path.startsWith("$HDFS_OP_DIR")){
 				String newPath = path.replace("$HDFS_OP_DIR", "$HDFS_DIR/"+opName);
@@ -294,13 +293,44 @@ public class Operator {
 		}
 	}
 	
+	public void copyExecVariables(Dataset d, int position, List<WorkflowNode> inputs){
+		SpecTreeNode variables = optree.getNode("Execution.Output"+position);
+		HashMap<String, String> val = new HashMap<String, String>();
+		variables.toKeyValues("", val);
+		for(Entry<String, String> e: val.entrySet()){
+			if(e.getKey().equals("path")){
+				copyExecPath(d, e.getValue());
+			}
+			else{
+	    		String[] s = e.getValue().split("\\.");
+				if(s[0].startsWith("In")){
+	    			int index = Integer.parseInt(s[0].substring((s[0].length()-1)));
+	    			//System.out.println("data index "+ index);
+		    		WorkflowNode n = inputs.get(index);
+		    		String v = "";
+		    		if(n.isOperator)
+		    			v=n.inputs.get(0).dataset.getParameter("Execution."+s[1]);
+		    		else
+		    			v = n.dataset.getParameter("Execution."+s[1]);
+		    		if(v==null){
+		    			v ="_";
+		    		}
+					d.add("Execution."+e.getKey(), v);
+				}
+				else{
+					d.add("Execution."+e.getKey(), e.getValue());
+				}
+			}
+		}
+	}
+	
 	public void outputFor(Dataset d, int position, List<WorkflowNode> inputs) throws Exception {
 		//System.out.println("Generating output for pos: "+ position);
 		d.datasetTree = optree.copyInputSubTree("Constraints.Output"+position);
 		if(d.datasetTree == null)
 			d.datasetTree = new SpecTree();
 		
-		copyExecPath(d,position);
+		copyExecVariables(d,position,inputs);
 		generateOptimizationMetrics(d,position,inputs);
 		/*int min = Integer.MAX_VALUE;
 		for(WorkflowNode n :inputs){
@@ -381,6 +411,7 @@ public class Operator {
 	
 	
 	public Double getMettric(String metric, List<WorkflowNode> inputs) throws Exception{
+		logger.info("Getting mettric: "+metric+" from operator: "+opName);
 		//System.out.println(metric);
 		Model model = models.get(metric).get(0);
 		if(!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)){

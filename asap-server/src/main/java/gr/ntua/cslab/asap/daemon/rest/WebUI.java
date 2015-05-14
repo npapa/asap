@@ -120,7 +120,7 @@ public class WebUI {
             @QueryParam("opname") String opname) throws Exception {
     	String ret = header;
     	ret+= "<h2>Matches for: "+opname+"</h2>";
-    	List<Operator> l = OperatorLibrary.getMatches(AbstractOperatorLibrary.getOperator(opname));
+    	List<Operator> l = OperatorLibrary.getMatchesNoIncrementID(AbstractOperatorLibrary.getOperator(opname));
     	ret += "<ul>";
     	for(Operator op : l){
 			ret+= "<li><a href=\"/web/operators/"+op.opName+"\">"+op.opName+"</a></li>";
