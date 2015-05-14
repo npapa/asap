@@ -22,9 +22,9 @@ Optimization.cost=100.0
 Execution.LuaScript=Postgres_GroupBy_Sort.lua
 Execution.Arguments.number=3
 Execution.Argument0=mydb1
-Execution.Argument1=In0.name
+Execution.Argument1=intermediate
 Execution.Argument2=output
-Execution.Output0.path=$HDFS_OP_DIR/output
-Execution.copyFromLocal=output
+Execution.Output0.path = $HDFS_OP_DIR/output
+Execution.copyFromLocal = output
 Execution.Output0.schema=(NATIONKEY int, TOTALPRICE float)
 

@@ -23,10 +23,12 @@ Optimization.outputSpace.Out0.size=Double
 Optimization.outputSpace.cost=Double
 Optimization.Out0.size=(In0.size+In1.size)*0.01
 Optimization.cost=100.0
-Execution.LuaScript=HIVE_Join_Filter.lua
-Execution.Arguments.number=2
-Execution.Argument0=In0.path
-Execution.Argument1=$HDFS_OP_DIR/tfidf
-Execution.Output0.path=$HDFS_OP_DIR/tfidf
+Execution.LuaScript=Postgres_Join_Filter.lua
+Execution.Arguments.number=4
+Execution.Argument0=In0.name
+Execution.Argument1=In1.name
+Execution.Argument2=intermediate
+Execution.Argument3=mydb1
+Execution.Output0.name=intermediate
 Execution.Output0.schema=(NATIONKEY int, TOTALPRICE float)
 
