@@ -19,10 +19,10 @@ Optimization.outputSpace.Out0.size=Double
 Optimization.outputSpace.cost=Double
 Optimization.Out0.size=(In0.size)*0.1
 Optimization.cost=100.0
-Execution.LuaScript=HIVE_Join_Filter.lua
+Execution.LuaScript=HIVE_GroupBy_Sort.lua
 Execution.Arguments.number=2
-Execution.Argument0=In0.path
-Execution.Argument1=$HDFS_OP_DIR/tfidf
-Execution.Output0.schema=(NATIONKEY int, TOTALPRICE float)
-Execution.Output0.path=$HDFS_OP_DIR/tfidf
+Execution.Argument0=In0.name
+Execution.Argument1=$HDFS_OP_DIR/output
+Execution.Output0.schema=(NATIONKEY int, SUM float)
+Execution.Output0.path=$HDFS_OP_DIR/output
 

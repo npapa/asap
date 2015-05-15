@@ -1,5 +1,6 @@
 #!/bin/bash
 export JAVA_HOME='/opt/jdk1.7.0_71/'
+export HADOOP_HOME='/opt/hadoop-2.6.0'
 input=$1
 mahout="/opt/mahout-distribution-0.9/bin/mahout"
 hadoop="/opt/hadoop-2.6.0/bin/hadoop"
@@ -26,5 +27,6 @@ chunk=64
 
 echo "[STEP 2/4] Sequence to Sparse $seqfiles, $output"
 ${mahout} seq2sparse \
-             -i $seqfiles --chunkSize $chunk\
+             -i $seqfiles -ow --chunkSize $chunk \
+	     -Dmapred.child.ulimit=15728640 -Dmapred.child.java.opts=-Xmx5g \
              -o $output --maxDFPercent $maxDFpercent --namedVector --minSupport $minTF
