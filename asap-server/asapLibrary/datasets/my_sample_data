@@ -1,7 +1,0 @@
-#
-#Tue Feb 03 18:37:47 EET 2015
-Optimization.points=5000000
-Optimization.dim=20
-Constraints.Engine.FS=HDFS
-Execution.path=hdfs:///user/root/asapDataAll
-

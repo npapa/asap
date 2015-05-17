@@ -16,6 +16,16 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+/*
+ * AbstractOperatorLibrary Class
+ * 
+ * This class loads every Abstract Operator in $ASAP_SERVER_HOME/asapLibrary/abstractOperators
+ * in ASAP Server.
+ * 
+ * The loaded Abstract Operators are listed in AbstractOperators tab at the Web UI
+ * 
+ * */
+
 public class AbstractOperatorLibrary {
 	private static HashMap<String,AbstractOperator> operators;
 	private static String operatorDirectory;
