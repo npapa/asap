@@ -1,1 +1,1 @@
-# ASAP: as Adaptable Scalable Analytics Platform
+# ASAP: an Adaptable Scalable Analytics Platform
