@@ -123,7 +123,7 @@ public class OperatorLibrary {
 	}
 
 	public static void editOperator(String opname, String opString) throws Exception {
-		String dir = "$ASAP_HOME/asap-server/asapLibrary/operators/"+opname;
+		String dir = "$ASAP_HOME/asapLibrary/operators/"+opname;
 		Operator old = operators.remove(opname);
 		old.writeModels(dir);
 		
@@ -138,10 +138,10 @@ public class OperatorLibrary {
 	}
 	
 	public static void addOperator(String opname, String opString) throws Exception {
-    	Operator o = new Operator(opname,"$ASAP_HOME/asap-server/asapLibrary/operators/"+opname);
+    	Operator o = new Operator(opname,"$ASAP_HOME/asapLibrary/operators/"+opname);
     	InputStream is = new ByteArrayInputStream(opString.getBytes());
     	o.readPropertiesFromStream(is);
-    	o.writeToPropertiesFile("$ASAP_HOME/asap-server/asapLibrary/operators/"+o.opName);
+    	o.writeToPropertiesFile("$ASAP_HOME/asapLibrary/operators/"+o.opName);
     	o.configureModel();
     	add(o);
     	is.close();

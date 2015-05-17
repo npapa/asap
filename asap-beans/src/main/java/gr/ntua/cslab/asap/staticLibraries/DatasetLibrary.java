@@ -15,6 +15,16 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+/*
+ * DatasetLibrary Class
+ * 
+ * This class loads every dataset in $ASAP_SERVER_HOME/asapLibrary/datasets
+ * in ASAP Server.
+ * 
+ * The loaded datasets are listed in Datasets tab at the Web UI
+ * 
+ * */
+
 public class DatasetLibrary {
 	private static HashMap<String,Dataset> datasets;
 	private static String datasetDirectory;
@@ -28,6 +38,7 @@ public class DatasetLibrary {
 
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile() && !listOfFiles[i].isHidden()) {
+				System.out.println("dataset: "+listOfFiles[i]);
 		        Logger.getLogger(DatasetLibrary.class.getName()).info("Loading Dataset: " + listOfFiles[i].getName());
 		        Dataset temp = new Dataset(listOfFiles[i].getName());
 				temp.readPropertiesFromFile(listOfFiles[i]);

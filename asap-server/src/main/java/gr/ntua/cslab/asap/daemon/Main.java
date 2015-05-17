@@ -131,7 +131,6 @@ public class Main {
 
     private static void addShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
             public void run() {
                 try {
                     Logger.getLogger(Main.class.getName()).info("Server is shutting down");
