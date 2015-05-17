@@ -1,0 +1,6 @@
+#
+#Sun May 17 13:14:01 EEST 2015
+Optimization.points=100000.0
+Constraints.type=SequenceFile
+Execution.path=$HDFS_DIR/TF_IDF_mahout_1/tfidf
+Constraints.Engine.FS=HDFS
