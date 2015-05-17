@@ -1,0 +1,5 @@
+#
+#Sun May 17 13:14:01 EEST 2015
+Optimization.documents=100000
+Execution.path=hdfs\:///user/root/asapDataAll
+Constraints.Engine.FS=HDFS
