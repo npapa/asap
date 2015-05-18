@@ -1,0 +1,4 @@
+#
+#Sun May 17 13:14:01 EEST 2015
+Execution.path=$HDFS_DIR/kmeans_mahout_4/kmeans
+Constraints.Engine.FS=HDFS
