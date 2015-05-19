@@ -95,13 +95,13 @@ public class RunningWorkflowLibrary {
 				if(op.getInput().isEmpty()){
 					Dataset inDataset = new Dataset(op.getName());
 					inDataset.readPropertiesFromString(op.getDescription());
-					System.out.println("Adding dataset: "+op.getName()+" "+inDataset.getParameter("Execution.path"));
+					logger.info("Adding dataset: "+op.getName()+" "+inDataset.getParameter("Execution.path"));
 					inputDatasets.put(op.getName(), inDataset.getParameter("Execution.path"));
 				}
 			}
 		}
-		System.out.println("Operators: "+operators);
-		System.out.println("InputDatasets: "+inputDatasets);
+		logger.info("Operators: "+operators);
+		logger.info("InputDatasets: "+inputDatasets);
 		String tmpFilename = mw.directory+"/" +UUID.randomUUID()+".xml";
 		Utils.marshall(d, tmpFilename);
 	    LuaYarnClientParameters params = new LuaYarnClientParameters(mw.name, tmpFilename, operators, inputDatasets, conf,

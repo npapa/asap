@@ -207,7 +207,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						int i =0;
 						for(WorkflowNode bin : bestInputs){
 							WorkflowNode tin = temp.inputs.get(i);
-							System.out.println("copy path from: "+bin.getName()+" to "+tin.getName());
+							logger.info("copy path from: "+bin.getName()+" to "+tin.getName());
 							if(bin.isOperator){
 								//move
 								bin.operator.copyExecVariables(tin.dataset,0,bin.inputs);
