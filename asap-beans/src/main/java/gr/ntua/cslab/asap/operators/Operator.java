@@ -95,10 +95,14 @@ public class Operator {
 							continue;
 						//System.out.println(c);
 	                	Model model = (Model) c.getConstructor().newInstance();
-						Sampler s = (Sampler) new UniformSampler();
+
 						CSVFileManager file = new CSVFileManager();
 			            file.setFilename(directory+"/data/"+e.getKey()+".csv");
-	
+			            
+			            //build models with adaptive sampling
+						/*
+						Sampler s = (Sampler) new UniformSampler();
+			            
 			            // samplers initialization
 			            s.setSamplingRate(0.8);
 			            //System.out.println(file.getDimensionRanges());
@@ -111,7 +115,22 @@ public class Operator {
 			                //System.out.println(out);
 			                model.feed(out, false);
 			            }
-			            model.train();
+			            */
+			            
+			            
+			            //build models without adaptive sampling
+			            for(InputSpacePoint in : file.getInputSpacePoints()){
+			                OutputSpacePoint out = file.getActualValue(in);
+			                //System.out.println(out);
+			                model.feed(out, false);
+			            }
+			            
+
+			            try{
+			            	model.train();
+			            }catch(Exception e1){
+			            	continue;
+			            }
 			            model.serialize(modelDir+"/"+e.getKey()+"_"+i+".model");
 			            i++;
 			            performanceModels.add(model);
@@ -416,13 +435,18 @@ public class Operator {
 		Model model = models.get(metric).get(0);
 		if(!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)){
 			for(Model m:models.get(metric)){
-				if(m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.MLPerceptron.class)){
+				
+				if(inputSpace.size()>=2 && m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.MLPerceptron.class)){
+					model =m;
+					break;
+				}
+				if(inputSpace.size()<2 && m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.LinearRegression.class)){
 					model =m;
 					break;
 				}
 			}
 		}
-		//System.out.println(model.getClass());
+		logger.info("Model selected: "+ model.getClass());
 		//System.out.println(opName);
 		//System.out.println("inputs: "+inputs);
 

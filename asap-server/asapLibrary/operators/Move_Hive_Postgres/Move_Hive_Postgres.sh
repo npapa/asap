@@ -10,6 +10,7 @@ do
 done
 chown -R postgres:postgres /tmp/out
 ls -ltr 
+rm -r t1
 
 echo "loading table to POSTGRES"
 sudo -u postgres psql $1 -c "DROP TABLE $2;"

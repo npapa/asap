@@ -4,4 +4,5 @@ Constraints.Input.number = 1
 Constraints.Input0.type = SQL
 Constraints.Output.number = 1
 Constraints.Output0.type = SQL
-Constraints.OpSpecification.Algorithm.name=tpch_q2
+Constraints.OpSpecification.Algorithm.name=SQL_query
+Constraints.OpSpecification.SQL_query="SELECT NATIONKEY, SUM(TOTALPRICE) AS SUM FROM $1 GROUP BY NATIONKEY ORDER BY SUM"
