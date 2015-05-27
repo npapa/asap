@@ -53,6 +53,10 @@ clusters = KMeans.train(data, k, maxIterations=max_iter, runs=runs, initializati
 
 f = open(args.output, "w+")
 for c in clusters.clusterCenters:
-    f.write(str(c))
+    f.write("[")
+    for i in range(len(c)):
+        if c[i]>=0.1:
+            f.write("(%d, %.3f)," % (i, c[i]))
+    f.write("]\n")
 
 f.close()
