@@ -51,7 +51,7 @@ clusters = KMeans.train(data, k, maxIterations=max_iter, runs=runs, initializati
 #WSSSE = parsedData.map(lambda point: error(point)).reduce(lambda x, y: x + y)
 # print("Within Set Sum of Squared Error = " + str(WSSSE))
 
-f = open(args.output, "w+")
+f = open(args.output, "w")
 for c in clusters.clusterCenters:
     f.write("[")
     for i in range(len(c)):
