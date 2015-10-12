@@ -623,7 +623,7 @@ public class Operator {
 		System.exit(0);
 		
 		
-		Operator op2 = new Operator("HBase_HashJoin","/Users/npapa/Documents/workspace/asap/asapLibrary/operators/Sort");
+		Operator op2 = new Operator("HBase_HashJoin","$ASAP_HOME/asapLibrary/operators/Sort");
 
 		op.readFromDir();
 		op.writeCSVfileUniformSampleOfModel("Out0.size", 1.0, "test.csv", ",");

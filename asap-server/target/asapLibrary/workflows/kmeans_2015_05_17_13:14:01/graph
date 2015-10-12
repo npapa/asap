@@ -1,0 +1,15 @@
+t6,d2
+t8,d2
+kmeans_weka_3,t6
+t5,kmeans_weka_3
+t1,t5
+TF_IDF_weka_0,t1
+t0,TF_IDF_weka_0
+crawlDocuments,t0
+kmeans_mahout_4,t8
+t7,kmeans_mahout_4
+t3,t7
+TF_IDF_mahout_1,t3
+t2,TF_IDF_mahout_1
+crawlDocuments,t2
+d2,$$target
